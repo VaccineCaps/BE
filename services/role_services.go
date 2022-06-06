@@ -35,6 +35,10 @@ func (s *svcRole) DeleteRoleByID(id int) error {
 	return s.repo.DeleteRoleByID(id)
 }
 
+func (s *svcRole) DeleteRoleByName(name string) error {
+	return s.repo.DeleteRoleByName(name string)
+}
+
 func NewServiceRole(repo domain.AdapterRepositoryRole, c config.Config) domain.AdapterServiceRole {
 	return &svcRole{
 		repo: repo,

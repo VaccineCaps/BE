@@ -56,7 +56,7 @@ func (r *repositoryDatabaseRole) DeleteRoleByID(id int) error {
 	return nil
 }
 
-func (r *repositoryDatabaseRole) DeleteRoleByName(id int) error {
+func (r *repositoryDatabaseRole) DeleteRoleByName(name string) error {
 	res := r.DB.Delete(&model.Role{
 		Name: name,
 	})
@@ -67,7 +67,7 @@ func (r *repositoryDatabaseRole) DeleteRoleByName(id int) error {
 	return nil
 }
 
-func NewMysqlRepository(db *gorm.DB) domain.AdapterRepository {
+func NewMysqlRepository(db *gorm.DB) domain.AdapterRepositoryRole {
 	return &repositoryDatabaseRole{
 		DB: db,
 	}

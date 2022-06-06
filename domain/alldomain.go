@@ -49,4 +49,5 @@ type AdapterServiceRole interface{
 	GetRoleByID(id int) (model.Role, error)
 	GetRoleByName(id int) (model.Role, error)
 	DeleteRoleByID(id int) error
+	DeleteRoleByName(name string) error
 }
