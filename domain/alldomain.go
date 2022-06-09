@@ -24,9 +24,9 @@ type AdapterRepositoryRole interface {
 	CreateRoles(role model.Role) error
 	GetAllRole() []model.Role
 	GetRoleByID(id int) (role model.Role, err error)
-	GetRoleByName(name string) (role model.Role, err error)
+	// GetRoleByName(name string) (role model.Role, err error)
 	DeleteRoleByID(id int) error
-	DeleteRoleByName(name string) error
+	// DeleteRoleByName(name string) error
 }
 
 // ================================================ Service
@@ -48,7 +48,7 @@ type AdapterServiceRole interface {
 	CreateRoleService(role model.Role) error
 	GetAllRolesService() []model.Role
 	GetRoleByID(id int) (model.Role, error)
-	GetRoleByName(name string) (model.Role, error)
+	// GetRoleByName(name string) (model.Role, error)
 	DeleteRoleByID(id int) error
-	DeleteRoleByName(name string) error
+	// DeleteRoleByName(name string) error
 }

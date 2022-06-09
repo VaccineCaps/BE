@@ -38,14 +38,14 @@ func (r *repository) GetRoleByID(id int) (role model.Role, err error) {
 	return
 }
 
-func (r *repository) GetRoleByName(name string) (role model.Role, err error) {
-	res := r.DB.Where("name = ?", name).Find(&role)
-	if res.RowsAffected < 1 {
-		err = fmt.Errorf("not found")
-	}
+// func (r *repository) GetRoleByName(name string) (role model.Role, err error) {
+// 	res := r.DB.Where("name = ?", name).Find(&role)
+// 	if res.RowsAffected < 1 {
+// 		err = fmt.Errorf("not found")
+// 	}
 
-	return
-}
+// 	return
+// }
 
 func (r *repository) DeleteRoleByID(id int) error {
 	res := r.DB.Delete(&model.Role{
@@ -58,16 +58,16 @@ func (r *repository) DeleteRoleByID(id int) error {
 	return nil
 }
 
-func (r *repository) DeleteRoleByName(name string) error {
-	res := r.DB.Delete(&model.Role{
-		Name: name,
-	})
-	if res.RowsAffected < 1 {
-		return fmt.Errorf("error delete")
-	}
+// func (r *repository) DeleteRoleByName(name string) error {
+// 	res := r.DB.Delete(&model.Role{
+// 		Name: name,
+// 	})
+// 	if res.RowsAffected < 1 {
+// 		return fmt.Errorf("error delete")
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
 func NewRoleRepository(db *gorm.DB) domain.AdapterRepositoryRole {
 	return &repository{
