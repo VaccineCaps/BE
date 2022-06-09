@@ -1,4 +1,4 @@
-package helper
+package middleware
 
 import (
 	config "BE/configs"
