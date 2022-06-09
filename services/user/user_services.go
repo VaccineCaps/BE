@@ -43,7 +43,7 @@ func (s *svcUser) LoginUser(email, password string) (string, int) {
 		return "Your Password Error", http.StatusUnauthorized
 	}
 
-	token, _ := middleware.CreateToken(int(user.ID), int(user.RoleId), user.Username, s.c.JWT_KEY)
+	token, _ := middleware.CreateToken(int(user.ID), int(user.RoleId), user.Email, s.c.JWT_KEY)
 	return token, http.StatusOK
 }
 

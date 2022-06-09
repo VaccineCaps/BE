@@ -35,33 +35,16 @@ func (ce *EchoControllerRole) GetRoleIDController(c echo.Context) error {
 	id := c.Param("id")
 	intID, err := strconv.Atoi(id)
 	if err != nil {
-
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"status":  "error",
+			"message": err.Error(),
+		})
 	}
 
 	res, err := ce.svc.GetRoleByID(intID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages": "success",
-		"roles":    res,
-	})
-}
-
-func (ce *EchoControllerRole) GetRoleNameController(c echo.Context) error {
-	name := c.Param("name")
-	strName, err := strconv.Atoi(name)
-	if err != nil {
-
-	}
-
-	res, err := ce.svc.GetRoleByName(strName)
-	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"messages": "no name or no delete",
 		})
 	}
 
@@ -85,22 +68,6 @@ func (ce *EchoControllerRole) DeleteRoleIDController(c echo.Context) error {
 	intID, _ := strconv.Atoi(id)
 
 	err := ce.svc.DeleteRoleByID(intID)
-	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"messages": "no id or no delete",
-		})
-	}
-
-	return c.JSON(http.StatusNoContent, map[string]interface{}{
-		"messages": "deleted",
-	})
-}
-
-func (ce *EchoControllerRole) DeleteRoleNameController(c echo.Context) error {
-	name := c.Param("Name")
-	strName, _ := strconv.Atoi(name)
-
-	err := ce.svc.DeleteRoleByID(strName)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
