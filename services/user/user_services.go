@@ -36,6 +36,7 @@ func (s *svcUser) GetUserByID(id int) (model.User, error) {
 }
 
 func (s *svcUser) LoginUser(email, password string) (string, int) {
+
 	user, err := s.repo.Login(email, password)
 
 	if err != nil {
