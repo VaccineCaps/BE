@@ -14,20 +14,15 @@ type repository struct {
 }
 
 func (r *repository) CreateUsers(user model.User) error {
+
+	hashedPassword, _ := hashPassword(user.Password)
+	user.Password = hashedPassword
 	res := r.DB.Create(&user)
 	if res.RowsAffected < 1 {
 		return fmt.Errorf("error insert")
 	}
 
 	return nil
-}
-
-// checkPasswordHash check bycrypted password
-func checkPasswordHash(password, hashed string) bool {
-
-	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
-
-	return err == nil
 }
 
 func (r *repository) Login(email, password string) (credential model.User, err error) {
@@ -39,7 +34,7 @@ func (r *repository) Login(email, password string) (credential model.User, err e
 		return credential, fmt.Errorf("invalid credentials")
 	}
 
-	response := r.DB.Raw("SELECT * FROM users WHERE username = ?", email).Scan(&credential)
+	response := r.DB.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&credential)
 
 	if response.RowsAffected < 1 {
 		return credential, fmt.Errorf("email or password is incorrect")
@@ -92,6 +87,20 @@ func (r *repository) DeleteByID(id int) error {
 	}
 
 	return nil
+}
+
+// hashPassword implement bycrypt for password
+func hashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+// checkPasswordHash check bycrypted password
+func checkPasswordHash(password, hashed string) bool {
+
+	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
+
+	return err == nil
 }
 
 func NewUserRepository(db *gorm.DB) domain.AdapterRepositoryUser {
