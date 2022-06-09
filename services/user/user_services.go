@@ -1,17 +1,17 @@
 package service
 
 import (
-	"fmt"
-	"net/http"
-
-	"BE/config"
+	config "BE/configs"
 	"BE/domain"
-	"BE/helper"
+	"BE/helper/middleware"
 	"BE/model"
+	"fmt"
+	"log"
+	"net/http"
 )
 
 type svcUser struct {
-	c config.Config
+	c    config.Config
 	repo domain.AdapterRepositoryUser
 }
 
@@ -36,17 +36,14 @@ func (s *svcUser) GetUserByID(id int) (model.User, error) {
 }
 
 func (s *svcUser) LoginUser(email, password string) (string, int) {
-	user, _ := s.repo.GetOneByEmail(email)
+	user, err := s.repo.Login(email, password)
 
-	if (user.Password != password) || (user == model.User{}) {
-		return "", http.StatusUnauthorized
-	}
-
-	token, err := helper.CreateToken(user.ID, user.Email, s.c.JWT_KEY)
 	if err != nil {
-		return "", http.StatusInternalServerError
+		log.Println("Your Password Error", err)
+		return "Your Password Error", http.StatusUnauthorized
 	}
 
+	token, _ := middleware.CreateToken(int(user.ID), int(user.RoleId), user.Username, s.c.JWT_KEY)
 	return token, http.StatusOK
 }
 
@@ -54,9 +51,9 @@ func (s *svcUser) DeleteByID(id int) error {
 	return s.repo.DeleteByID(id)
 }
 
-func NewServiceUser(repo domain.AdapterRepositoryUser, c config.Config) domain.AdapterService {
+func NewServiceUser(repo domain.AdapterRepositoryUser, c config.Config) domain.AdapterServiceUser {
 	return &svcUser{
 		repo: repo,
-		c: c,
+		c:    c,
 	}
 }

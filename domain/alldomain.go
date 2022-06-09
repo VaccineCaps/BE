@@ -9,6 +9,7 @@ import (
 type AdapterRepositoryUser interface {
 
 	// untuk user
+	Login(email, password string) (credential model.User, err error)
 	CreateUsers(user model.User) error
 	GetAll() []model.User
 	GetOneByID(id int) (user model.User, err error)
@@ -19,18 +20,18 @@ type AdapterRepositoryUser interface {
 
 type AdapterRepositoryRole interface {
 
-	// untuk Role 
+	// untuk Role
 	CreateRoles(role model.Role) error
 	GetAllRole() []model.Role
 	GetRoleByID(id int) (role model.Role, err error)
 	GetRoleByName(name string) (role model.Role, err error)
 	DeleteRoleByID(id int) error
-	DeleteRoleByName(id int) error
+	DeleteRoleByName(name string) error
 }
 
 // ================================================ Service
 
-type AdapterServiceUser interface{
+type AdapterServiceUser interface {
 
 	//untuk user
 	CreateUserService(user model.User) error
@@ -41,13 +42,13 @@ type AdapterServiceUser interface{
 	DeleteByID(id int) error
 }
 
-type AdapterServiceRole interface{
+type AdapterServiceRole interface {
 
 	//untuk role
 	CreateRoleService(role model.Role) error
 	GetAllRolesService() []model.Role
 	GetRoleByID(id int) (model.Role, error)
-	GetRoleByName(id int) (model.Role, error)
+	GetRoleByName(name string) (model.Role, error)
 	DeleteRoleByID(id int) error
 	DeleteRoleByName(name string) error
 }

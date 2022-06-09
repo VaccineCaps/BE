@@ -3,15 +3,17 @@ package repository
 import (
 	"fmt"
 
+	"BE/domain"
 	"BE/model"
+
 	"gorm.io/gorm"
 )
 
-type repositoryDatabaseRole struct {
+type repository struct {
 	DB *gorm.DB
 }
 
-func (r *repositoryDatabaseRole) CreateRoles(role model.Role) error {
+func (r *repository) CreateRoles(role model.Role) error {
 	res := r.DB.Create(&role)
 	if res.RowsAffected < 1 {
 		return fmt.Errorf("error insert")
@@ -20,14 +22,14 @@ func (r *repositoryDatabaseRole) CreateRoles(role model.Role) error {
 	return nil
 }
 
-func (r *repositoryDatabaseRole) GetAllRole() []model.Role {
+func (r *repository) GetAllRole() []model.Role {
 	roles := []model.Role{}
 	r.DB.Find(roles)
 
 	return roles
 }
 
-func (r *repositoryDatabaseRole) GetRoleByID(id int) (role model.Role, err error) {
+func (r *repository) GetRoleByID(id int) (role model.Role, err error) {
 	res := r.DB.Where("id = ?", id).Find(&role)
 	if res.RowsAffected < 1 {
 		err = fmt.Errorf("not found")
@@ -36,7 +38,7 @@ func (r *repositoryDatabaseRole) GetRoleByID(id int) (role model.Role, err error
 	return
 }
 
-func (r *repositoryDatabaseRole) GetRoleByName(name string) (role model.Role, err error) {
+func (r *repository) GetRoleByName(name string) (role model.Role, err error) {
 	res := r.DB.Where("name = ?", name).Find(&role)
 	if res.RowsAffected < 1 {
 		err = fmt.Errorf("not found")
@@ -45,7 +47,7 @@ func (r *repositoryDatabaseRole) GetRoleByName(name string) (role model.Role, er
 	return
 }
 
-func (r *repositoryDatabaseRole) DeleteRoleByID(id int) error {
+func (r *repository) DeleteRoleByID(id int) error {
 	res := r.DB.Delete(&model.Role{
 		ID: id,
 	})
@@ -56,7 +58,7 @@ func (r *repositoryDatabaseRole) DeleteRoleByID(id int) error {
 	return nil
 }
 
-func (r *repositoryDatabaseRole) DeleteRoleByName(name string) error {
+func (r *repository) DeleteRoleByName(name string) error {
 	res := r.DB.Delete(&model.Role{
 		Name: name,
 	})
@@ -67,8 +69,8 @@ func (r *repositoryDatabaseRole) DeleteRoleByName(name string) error {
 	return nil
 }
 
-func NewMysqlRepository(db *gorm.DB) domain.AdapterRepositoryRole {
-	return &repositoryDatabaseRole{
+func NewRoleRepository(db *gorm.DB) domain.AdapterRepositoryRole {
+	return &repository{
 		DB: db,
 	}
 }
