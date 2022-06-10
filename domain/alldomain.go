@@ -46,7 +46,7 @@ type AdapterServiceRole interface {
 
 	//untuk role
 	CreateRoleService(role model.Role) error
-	GetAllRolesService() []model.Role
+	GetAllRoleService() []model.Role
 	GetRoleByID(id int) (model.Role, error)
 	// GetRoleByName(name string) (model.Role, error)
 	DeleteRoleByID(id int) error

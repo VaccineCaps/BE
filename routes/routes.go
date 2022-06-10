@@ -5,8 +5,11 @@ import (
 	"BE/database"
 	"BE/handler"
 	"BE/helper/middleware"
-	repository "BE/repository/user"
-	service "BE/services/user"
+	repoRole "BE/repository/role"
+	repoUser "BE/repository/user"
+
+	serviceRole "BE/services/role"
+	serviceUser "BE/services/user"
 
 	"github.com/labstack/echo/v4"
 )
@@ -14,9 +17,9 @@ import (
 func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 
 	db := database.InitDB(conf)
-	repo := repository.NewUserRepository(db)
+	repo := repoUser.NewUserRepository(db)
 
-	svc := service.NewServiceUser(repo, conf)
+	svc := serviceUser.NewServiceUser(repo, conf)
 
 	controller := handler.EchoControllerUser{
 		Svc: svc,
@@ -28,4 +31,25 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin")
 	adminRoutes.Use(middleware.CheckTokenAdmin)
 	adminRoutes.GET("/users", controller.GetUsersController)
+	adminRoutes.GET("/users/:id", controller.GetUserController)
+	adminRoutes.POST("/users/:id", controller.UpdateUserController)
+	adminRoutes.DELETE("/users/:id", controller.DeleteUserController)
+}
+
+func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoRole.NewRoleRepository(db)
+
+	svc := serviceRole.NewServiceRole(repo, conf)
+
+	controller := handler.EchoControllerRole{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/role", controller.CreateRoleController)
+	adminRoutes.GET("/role", controller.GetAllRoleController)
+	adminRoutes.GET("/role/:id", controller.GetRoleIDController)
+	adminRoutes.DELETE("/role/:id", controller.DeleteRoleIDController)
 }

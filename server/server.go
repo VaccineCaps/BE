@@ -12,5 +12,6 @@ func Server() *echo.Echo {
 	conf := config.InitConfiguration()
 
 	routes.RegisterUserGroupAPI(app, conf)
+	routes.RegisterRoleGroupAPI(app, conf)
 	return app
 }
