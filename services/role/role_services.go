@@ -15,7 +15,7 @@ func (s *svcRole) CreateRoleService(role model.Role) error {
 	return s.repo.CreateRoles(role)
 }
 
-func (s *svcRole) GetAllRolesService() []model.Role {
+func (s *svcRole) GetAllRoleService() []model.Role {
 	return s.repo.GetAllRole()
 }
 

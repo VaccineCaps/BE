@@ -23,10 +23,10 @@ func (r *repository) CreateRoles(role model.Role) error {
 }
 
 func (r *repository) GetAllRole() []model.Role {
-	roles := []model.Role{}
-	r.DB.Find(roles)
+	allRole := []model.Role{}
+	r.DB.Find(&allRole)
 
-	return roles
+	return allRole
 }
 
 func (r *repository) GetRoleByID(id int) (role model.Role, err error) {
