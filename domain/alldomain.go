@@ -29,6 +29,15 @@ type AdapterRepositoryRole interface {
 	// DeleteRoleByName(name string) error
 }
 
+type AdapterRepositoryProvince interface {
+
+	// untuk Province
+	CreateProvinces(province model.Provinces) error 
+	GetAllProvince() []model.Provinces 
+	GetProvinceByID(id int) (province model.Provinces, err error) 
+	DeleteProvinceByID(id int) error 
+}
+
 // ================================================ Service
 
 type AdapterServiceUser interface {
@@ -51,4 +60,11 @@ type AdapterServiceRole interface {
 	// GetRoleByName(name string) (model.Role, error)
 	DeleteRoleByID(id int) error
 	// DeleteRoleByName(name string) error
+}
+
+type AdapterServiceProvince interface {
+	CreateProvinceService(province model.Provinces) error 
+	GetAllProvinceService() []model.Provinces
+	GetProvinceByID(id int) (model.Provinces, error) 
+	DeleteProvinceByID(id int) error
 }

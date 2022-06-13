@@ -13,5 +13,6 @@ func Server() *echo.Echo {
 
 	routes.RegisterUserGroupAPI(app, conf)
 	routes.RegisterRoleGroupAPI(app, conf)
+	routes.RegisterProvinceGroupAPI(app, conf)
 	return app
 }
