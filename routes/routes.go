@@ -8,10 +8,12 @@ import (
 	repoRole "BE/repository/role"
 	repoUser "BE/repository/user"
 	repoProvince "BE/repository/province"
+	repoCity "BE/repository/cities"
 
 	serviceRole "BE/services/role"
 	serviceUser "BE/services/user"
 	serviceProvince "BE/services/province"
+	serviceCity "BE/services/cities"
 
 	"github.com/labstack/echo/v4"
 )
@@ -72,4 +74,22 @@ func RegisterProvinceGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/province", controller.GetAllProvinceController)
 	adminRoutes.GET("/province/:id", controller.GetProvinceIDController)
 	adminRoutes.DELETE("/province/:id", controller.DeleteProvinceIDController)
+}
+
+func RegisterCityGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoCity.NewCityRepository(db)
+
+	svc := serviceCity.NewServiceCity(repo, conf)
+
+	controller := handler.EchoControllerCity{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/cities", controller.CreateCityController)
+	adminRoutes.GET("/cities", controller.GetAllCityController)
+	adminRoutes.GET("/cities/:id", controller.GetCityIDController)
+	adminRoutes.DELETE("/cities/:id", controller.DeleteCityIDController)
 }

@@ -38,6 +38,15 @@ type AdapterRepositoryProvince interface {
 	DeleteProvinceByID(id int) error 
 }
 
+type AdapterRepositoryCity interface {
+
+	// untuk City
+	CreateCities(City model.Cities) error
+	GetAllCity() []model.Cities
+	GetCityByID(id int) (City model.Cities, err error) 
+	DeleteCityByID(id int) error 
+}
+
 // ================================================ Service
 
 type AdapterServiceUser interface {
@@ -63,8 +72,19 @@ type AdapterServiceRole interface {
 }
 
 type AdapterServiceProvince interface {
+
+	//province
 	CreateProvinceService(province model.Provinces) error 
 	GetAllProvinceService() []model.Provinces
 	GetProvinceByID(id int) (model.Provinces, error) 
 	DeleteProvinceByID(id int) error
+}
+
+type AdapterServiceCity interface {
+
+	//city
+	CreateCityService(City model.Cities) error
+	GetAllCityService() []model.Cities
+	GetCityByID(id int) (model.Cities, error)
+	DeleteCityByID(id int) error
 }
