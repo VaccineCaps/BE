@@ -9,11 +9,13 @@ import (
 	repoUser "BE/repository/user"
 	repoProvince "BE/repository/province"
 	repoCity "BE/repository/cities"
+	repoHospital "BE/repository/hospital"
 
 	serviceRole "BE/services/role"
 	serviceUser "BE/services/user"
 	serviceProvince "BE/services/province"
 	serviceCity "BE/services/cities"
+	serviceHospital "BE/services/hospitals"
 
 	"github.com/labstack/echo/v4"
 )
@@ -92,4 +94,23 @@ func RegisterCityGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/cities", controller.GetAllCityController)
 	adminRoutes.GET("/cities/:id", controller.GetCityIDController)
 	adminRoutes.DELETE("/cities/:id", controller.DeleteCityIDController)
+}
+
+func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoHospital.NewHospitalRepository(db)
+
+	svc := serviceHospital.NewServiceHospitals(repo, conf)
+
+	controller := handler.EchoControllerHospital{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/hospitals", controller.CreateHospitalController)
+	adminRoutes.GET("/hospitals", controller.GetHospitalController)
+	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
+	adminRoutes.PUT("/hospital/:id", controller.UpdateHospitalController)
+	adminRoutes.DELETE("/hospitals/:id", controller.DeleteHospitalController)
 }

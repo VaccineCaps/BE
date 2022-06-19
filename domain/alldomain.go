@@ -47,6 +47,19 @@ type AdapterRepositoryCity interface {
 	DeleteCityByID(id int) error 
 }
 
+type AdapterRepositoryHospital interface {
+
+	// untuk hospital
+	CreateHospitals(hospital model.Hospitals) error 
+	GetAllHospitals() []model.Hospitals 
+	// GetHospitalByName(name string) (hospital model.Hospitals, err error)
+	GetHospitalByID(id int) (hospital model.Hospitals, err error)
+	UpdateHospitalByID(id int, hospital model.Hospitals) error
+	DeleteHospitalByID(id int) error 
+	// UpdateHospitalByName(name string, hospital model.Hospitals) error
+	// DeleteHospitalByName(name string) error 
+}
+
 // ================================================ Service
 
 type AdapterServiceUser interface {
@@ -87,4 +100,15 @@ type AdapterServiceCity interface {
 	GetAllCityService() []model.Cities
 	GetCityByID(id int) (model.Cities, error)
 	DeleteCityByID(id int) error
+}
+
+type AdapterServiceHospital interface{
+
+	//hospital
+	CreateHospitalService(Hospitals model.Hospitals) error 
+	UpdateHospitalService(id int, Hospitals model.Hospitals) error 
+	GetAllHospitalsService() []model.Hospitals 
+	GetHospitalsByID(id int) (model.Hospitals, error) 
+	DeleteHospitalByID(id int) error 
+
 }
