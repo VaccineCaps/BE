@@ -125,6 +125,12 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
 	adminRoutes.PUT("/hospitals/:id", controller.UpdateHospitalController)
 	adminRoutes.DELETE("/hospitals/:id", controller.DeleteHospitalController)
+
+	userRoutes := e.Group("user")
+	userRoutes.Use(middleware.CheckTokenUser)
+	adminRoutes.GET("/hospitals", controller.GetHospitalController)
+	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
+
 }
 
 func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
