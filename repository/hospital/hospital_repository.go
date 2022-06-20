@@ -60,14 +60,14 @@ func (r *repository) DeleteHospitalByID(id int) error {
 
 // By name
 
-func (r *repository) GetHospitalByName(name string) (hospital model.Hospitals, err error) {
-	res := r.DB.Where("name = ?", name).Find(&hospital)
-	if res.RowsAffected < 1 {
-		err = fmt.Errorf("not found")
-	}
+// func (r *repository) GetHospitalByName(name string) (hospital model.Hospitals, err error) {
+// 	res := r.DB.Where("name = ?", name).Find(&hospital)
+// 	if res.RowsAffected < 1 {
+// 		err = fmt.Errorf("not found")
+// 	}
 
-	return
-}
+// 	return
+// }
 
 // func (r *repository) UpdateHospitalByName(name string, hospital model.Hospitals) error {
 // 	res := r.DB.Where("name = ?", name).UpdateColumns(&hospital)

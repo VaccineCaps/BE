@@ -60,6 +60,14 @@ type AdapterRepositoryHospital interface {
 	// DeleteHospitalByName(name string) error 
 }
 
+type AdapterRepositoryNews interface{
+	CreateNews(news model.News) error
+	GetAllNews() []model.News 
+	GetNewsByID(id int) (news model.News, err error)
+	UpdateNewsByID(id int, news model.News) error
+	DeleteNewsByID(id int) error
+}
+
 // ================================================ Service
 
 type AdapterServiceUser interface {
@@ -109,6 +117,17 @@ type AdapterServiceHospital interface{
 	UpdateHospitalService(id int, Hospitals model.Hospitals) error 
 	GetAllHospitalsService() []model.Hospitals 
 	GetHospitalsByID(id int) (model.Hospitals, error) 
+	// GetHospitalsByName(name string) (model.Hospitals, error)
 	DeleteHospitalByID(id int) error 
 
+}
+
+type AdapterServiceNews interface {
+
+	//news
+	CreateNewsService(News model.News) error 
+	UpdateNewsService(id int, News model.News) error
+	GetAllNewsService() []model.News
+	GetNewsByID(id int) (model.News, error)
+	DeleteNewsByID(id int) error
 }

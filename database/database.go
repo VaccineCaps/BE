@@ -34,6 +34,8 @@ func InitDB(conf config.Config) *gorm.DB {
 	DB.AutoMigrate(&model.User{})
 	DB.AutoMigrate(&model.Provinces{})
 	DB.AutoMigrate(&model.Cities{})
+	DB.AutoMigrate(&model.Hospitals{})
+	DB.AutoMigrate(&model.News{})
 
 	return DB
 

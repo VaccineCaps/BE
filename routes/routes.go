@@ -3,19 +3,31 @@ package routes
 import (
 	config "BE/configs"
 	"BE/database"
-	"BE/handler"
 	"BE/helper/middleware"
-	repoRole "BE/repository/role"
-	repoUser "BE/repository/user"
-	repoProvince "BE/repository/province"
-	repoCity "BE/repository/cities"
-	repoHospital "BE/repository/hospital"
 
-	serviceRole "BE/services/role"
-	serviceUser "BE/services/user"
-	serviceProvince "BE/services/province"
-	serviceCity "BE/services/cities"
-	serviceHospital "BE/services/hospitals"
+	// Deklarasi Handler 
+	handlerUser 	"BE/handler/user"
+	handlerRole 	"BE/handler/role"
+	handlerProvince "BE/handler/province"
+	handlerCities	"BE/handler/cities"
+	handlerHospital "BE/handler/hospital"
+	handlerNews		"BE/handler/news"
+
+	// Deklarasi repository 
+	repoRole 		"BE/repository/role"
+	repoUser 		"BE/repository/user"
+	repoProvince 	"BE/repository/province"
+	repoCity 		"BE/repository/cities"
+	repoHospital 	"BE/repository/hospital"
+	repoNews 		"BE/repository/news"
+
+	// Deklarasi Services 
+	serviceRole 		"BE/services/role"
+	serviceUser 		"BE/services/user"
+	serviceProvince 	"BE/services/province"
+	serviceCity 		"BE/services/cities"
+	serviceHospital 	"BE/services/hospitals"
+	serviceNews			"BE/services/news"
 
 	"github.com/labstack/echo/v4"
 )
@@ -27,7 +39,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 
 	svc := serviceUser.NewServiceUser(repo, conf)
 
-	controller := handler.EchoControllerUser{
+	controller := handlerUser.EchoControllerUser{
 		Svc: svc,
 	}
 
@@ -48,7 +60,7 @@ func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
 
 	svc := serviceRole.NewServiceRole(repo, conf)
 
-	controller := handler.EchoControllerRole{
+	controller := handlerRole.EchoControllerRole{
 		Svc: svc,
 	}
 
@@ -66,7 +78,7 @@ func RegisterProvinceGroupAPI(e *echo.Echo, conf config.Config) {
 
 	svc := serviceProvince.NewServiceProvince(repo, conf)
 
-	controller := handler.EchoControllerProvince{
+	controller := handlerProvince.EchoControllerProvince{
 		Svc: svc,
 	}
 
@@ -84,7 +96,7 @@ func RegisterCityGroupAPI(e *echo.Echo, conf config.Config) {
 
 	svc := serviceCity.NewServiceCity(repo, conf)
 
-	controller := handler.EchoControllerCity{
+	controller := handlerCities.EchoControllerCity{
 		Svc: svc,
 	}
 
@@ -102,7 +114,7 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 
 	svc := serviceHospital.NewServiceHospitals(repo, conf)
 
-	controller := handler.EchoControllerHospital{
+	controller := handlerHospital.EchoControllerHospital{
 		Svc: svc,
 	}
 
@@ -111,6 +123,25 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/hospitals", controller.CreateHospitalController)
 	adminRoutes.GET("/hospitals", controller.GetHospitalController)
 	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
-	adminRoutes.PUT("/hospital/:id", controller.UpdateHospitalController)
+	adminRoutes.PUT("/hospitals/:id", controller.UpdateHospitalController)
 	adminRoutes.DELETE("/hospitals/:id", controller.DeleteHospitalController)
+}
+
+func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoNews.NewNewsRepository(db)
+
+	svc := serviceNews.NewServiceNews(repo, conf)
+
+	controller := handlerNews.EchoControllerNews{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/news", controller.CreateNewsController)
+	adminRoutes.GET("/news", controller.GetNewsController)
+	adminRoutes.GET("/news/:id", controller.GetNewsIDController)
+	adminRoutes.PUT("/news/:id", controller.UpdateNewsController)
+	adminRoutes.DELETE("/news/:id", controller.DeleteNewsController)
 }

@@ -84,9 +84,10 @@ func (ce *EchoControllerHospital) GetHospitalIDController(c echo.Context) error 
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"messages": "success",
-		"roles":    res,
+		"hospitals":    res,
 	})
 }
+
 
 func (ce *EchoControllerHospital) GetHospitalController(c echo.Context) error {
 	Hospitalss := ce.Svc.GetAllHospitalsService()
