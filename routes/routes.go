@@ -12,6 +12,7 @@ import (
 	handlerCities	"BE/handler/cities"
 	handlerHospital "BE/handler/hospital"
 	handlerNews		"BE/handler/news"
+	handlerOP 		"BE/handler/otherperson"
 
 	// Deklarasi repository 
 	repoRole 		"BE/repository/role"
@@ -20,6 +21,7 @@ import (
 	repoCity 		"BE/repository/cities"
 	repoHospital 	"BE/repository/hospital"
 	repoNews 		"BE/repository/news"
+	repoOP			"BE/repository/otherperson"
 
 	// Deklarasi Services 
 	serviceRole 		"BE/services/role"
@@ -28,6 +30,7 @@ import (
 	serviceCity 		"BE/services/cities"
 	serviceHospital 	"BE/services/hospitals"
 	serviceNews			"BE/services/news"
+	serviceOP 			"BE/services/otherperson"
 
 	"github.com/labstack/echo/v4"
 )
@@ -150,4 +153,23 @@ func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/news/:id", controller.GetNewsIDController)
 	adminRoutes.PUT("/news/:id", controller.UpdateNewsController)
 	adminRoutes.DELETE("/news/:id", controller.DeleteNewsController)
+}
+
+func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoOP.NewOtherRepository(db)
+
+	svc := serviceOP.NewServiceOtherPerson(repo, conf)
+
+	controller := handlerOP.EchoControllerOther{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/others", controller.CreateOtherController)
+	adminRoutes.GET("/others", controller.GetOtherController)
+	adminRoutes.GET("/others/:id", controller.GetOtherIDController)
+	adminRoutes.PUT("/others/:id", controller.UpdateOtherController)
+	adminRoutes.DELETE("/others/:id", controller.DeleteOtherController)
 }

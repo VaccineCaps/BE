@@ -5,7 +5,7 @@ type News struct {
 	Title    		string 		`json:"title" validate:"required"`
 	Image    		string 		`json:"image" validate:"required"`
 	Context 		string 		`json:"context" validate:"required"`
-	HospitalId   	int    		`gorm:"not null; default:2" json:"hospital_id"`
+	HospitalId   	int    		`gorm:"not null" json:"hospital_id"`
 	Hospital     	Hospitals   `gorm:"ForeignKey:HospitalId;references:ID;null" json:"-"`
 }
 

@@ -68,6 +68,16 @@ type AdapterRepositoryNews interface{
 	DeleteNewsByID(id int) error
 }
 
+type AdapterRepositoryOther interface{
+
+	//otherperson
+	CreateOtherPerson(Other model.OtherPerson) error
+	GetAllOtherPerson() []model.OtherPerson
+	GetOtherByID(id int) (Other model.OtherPerson, err error)
+	UpdateOtherByID(id int, Other model.OtherPerson) error
+	DeleteOtherByID(id int) error
+}
+
 // ================================================ Service
 
 type AdapterServiceUser interface {
@@ -130,4 +140,14 @@ type AdapterServiceNews interface {
 	GetAllNewsService() []model.News
 	GetNewsByID(id int) (model.News, error)
 	DeleteNewsByID(id int) error
+}
+
+type AdapterServiceOther interface {
+	
+	//otherperson
+	CreateOtherService(OtherPerson model.OtherPerson) error
+	UpdateOtherService(id int, OtherPerson model.OtherPerson) error
+	GetAllOtherService() []model.OtherPerson
+	GetOtherByID(id int) (model.OtherPerson, error)
+	DeleteOtherByID(id int) error
 }
