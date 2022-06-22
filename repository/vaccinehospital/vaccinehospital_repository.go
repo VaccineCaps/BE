@@ -31,7 +31,7 @@ func (r *repository) UpdateStokByID(hospital_id, vaccine_id int, stok model.Vacc
 	return nil
 }
 
-func (r *repository) GetAllStokByHospital(hospital_id int) (stok model.VaccineHospitals, err error) {
+func (r *repository) GetAllStokByHospital(hospital_id int) (stok []model.VaccineHospitals, err error) {
 	res := r.DB.Where("hospital_id = ? ", hospital_id).Find(&stok)
 	if res.RowsAffected < 1 {
 		err = fmt.Errorf("not found")

@@ -48,8 +48,8 @@ func (ce *EchoControllerVaccine) GetVaccineIDController(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"messages":  "success",
-		"provinces": res,
+		"messages": "success",
+		"vaccines": res,
 	})
 }
 
@@ -57,8 +57,8 @@ func (ce *EchoControllerVaccine) GetAllVaccineController(c echo.Context) error {
 	vaccines := ce.Svc.GetAllVaccineService()
 
 	return c.JSONPretty(http.StatusOK, map[string]interface{}{
-		"messages":  "success",
-		"provinces": vaccines,
+		"messages": "success",
+		"vaccines": vaccines,
 	}, "  ")
 }
 

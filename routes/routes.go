@@ -212,8 +212,8 @@ func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin")
 	adminRoutes.Use(middleware.CheckTokenAdmin)
 	adminRoutes.POST("/stok/create", controller.CreateStokHandler)
-	adminRoutes.GET("/stoks", controller.GetStokByHospitalController)
-	adminRoutes.GET("/stok", controller.GetStokByHospitalVaccineIDController)
+	adminRoutes.GET("/stok/:hospital_id", controller.GetStokByHospitalController)
+	adminRoutes.GET("/stok/:hospital_id/:vaccine_id", controller.GetStokByHospitalVaccineIDController)
 	adminRoutes.POST("/stok/update", controller.UpdateVaccineStokController)
 	adminRoutes.DELETE("/stok/delete", controller.DeleteHospitalVaccineIDController)
 }

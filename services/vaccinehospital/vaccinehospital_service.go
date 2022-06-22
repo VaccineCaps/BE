@@ -19,7 +19,7 @@ func (s *svcVaccine) UpdateVaccineStokService(hospital_id, vaccine_id int, stok 
 	return s.repo.UpdateStokByID(hospital_id, vaccine_id, stok)
 }
 
-func (s *svcVaccine) GetAllStokByHospitalService(hospital_id int) (stok model.VaccineHospitals, err error) {
+func (s *svcVaccine) GetAllStokByHospitalService(hospital_id int) (stok []model.VaccineHospitals, err error) {
 	return s.repo.GetAllStokByHospital(hospital_id)
 }
 
