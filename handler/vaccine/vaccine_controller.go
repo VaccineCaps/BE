@@ -62,6 +62,25 @@ func (ce *EchoControllerVaccine) GetAllVaccineController(c echo.Context) error {
 	}, "  ")
 }
 
+func (ce *EchoControllerVaccine) UpdateVaccineController(c echo.Context) error {
+	id := c.Param("id")
+	intID, _ := strconv.Atoi(id)
+
+	vaccine := model.Vaccines{}
+	c.Bind(&vaccine)
+
+	err := ce.Svc.UpdateVaccineByID(intID, vaccine)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, map[string]interface{}{
+			"messages": "no id or no change",
+		})
+	}
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"messages": "edited",
+	})
+}
+
 func (ce *EchoControllerVaccine) DeleteVaccineIDController(c echo.Context) error {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
