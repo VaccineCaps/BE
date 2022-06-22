@@ -5,32 +5,35 @@ import (
 	"BE/database"
 	"BE/helper/middleware"
 
-	// Deklarasi Handler 
-	handlerUser 	"BE/handler/user"
-	handlerRole 	"BE/handler/role"
-	handlerProvince "BE/handler/province"
-	handlerCities	"BE/handler/cities"
+	// Deklarasi Handler
+	handlerCities "BE/handler/cities"
 	handlerHospital "BE/handler/hospital"
-	handlerNews		"BE/handler/news"
-	handlerOP 		"BE/handler/otherperson"
+	handlerNews "BE/handler/news"
+	handlerOP "BE/handler/otherperson"
+	handlerProvince "BE/handler/province"
+	handlerRole "BE/handler/role"
+	handlerUser "BE/handler/user"
+	handlerVaccine "BE/handler/vaccine"
 
-	// Deklarasi repository 
-	repoRole 		"BE/repository/role"
-	repoUser 		"BE/repository/user"
-	repoProvince 	"BE/repository/province"
-	repoCity 		"BE/repository/cities"
-	repoHospital 	"BE/repository/hospital"
-	repoNews 		"BE/repository/news"
-	repoOP			"BE/repository/otherperson"
+	// Deklarasi repository
+	repoCity "BE/repository/cities"
+	repoHospital "BE/repository/hospital"
+	repoNews "BE/repository/news"
+	repoOP "BE/repository/otherperson"
+	repoProvince "BE/repository/province"
+	repoRole "BE/repository/role"
+	repoUser "BE/repository/user"
+	repoVaccine "BE/repository/vaccine"
 
-	// Deklarasi Services 
-	serviceRole 		"BE/services/role"
-	serviceUser 		"BE/services/user"
-	serviceProvince 	"BE/services/province"
-	serviceCity 		"BE/services/cities"
-	serviceHospital 	"BE/services/hospitals"
-	serviceNews			"BE/services/news"
-	serviceOP 			"BE/services/otherperson"
+	// Deklarasi Services
+	serviceCity "BE/services/cities"
+	serviceHospital "BE/services/hospitals"
+	serviceNews "BE/services/news"
+	serviceOP "BE/services/otherperson"
+	serviceProvince "BE/services/province"
+	serviceRole "BE/services/role"
+	serviceUser "BE/services/user"
+	serviceVaccine "BE/services/vaccine"
 
 	"github.com/labstack/echo/v4"
 )
@@ -155,7 +158,7 @@ func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/news/:id", controller.DeleteNewsController)
 }
 
-func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
+func RegisterOPsGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
 	repo := repoOP.NewOtherRepository(db)
 
@@ -172,4 +175,22 @@ func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/others/:id", controller.GetOtherIDController)
 	adminRoutes.PUT("/others/:id", controller.UpdateOtherController)
 	adminRoutes.DELETE("/others/:id", controller.DeleteOtherController)
+}
+
+func RegisterVaccineGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoVaccine.NewVaccineRepository(db)
+
+	svc := serviceVaccine.NewServiceVaccine(repo, conf)
+
+	controller := handlerVaccine.EchoControllerVaccine{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/vaccine", controller.CreateVaccineController)
+	adminRoutes.GET("/vaccine", controller.GetAllVaccineController)
+	adminRoutes.GET("/vaccine/:id", controller.GetVaccineIDController)
+	adminRoutes.DELETE("/vaccine/:id", controller.DeleteVaccineIDController)
 }

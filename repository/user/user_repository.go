@@ -3,9 +3,9 @@ package repository
 import (
 	"BE/domain"
 	"BE/model"
+	repo "BE/repository/hash"
 	"fmt"
 
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -15,7 +15,7 @@ type repository struct {
 
 func (r *repository) CreateUsers(user model.User) error {
 
-	hashedPassword, _ := hashPassword(user.Password)
+	hashedPassword, _ := repo.HashPassword(user.Password)
 	user.Password = hashedPassword
 	res := r.DB.Create(&user)
 	if res.RowsAffected < 1 {
@@ -29,7 +29,7 @@ func (r *repository) Login(email, password string) (credential model.User, err e
 	var hashedPassword string
 	_ = r.DB.Raw("SELECT password FROM users WHERE email = ?", email).Scan(&hashedPassword)
 
-	match := checkPasswordHash(password, hashedPassword)
+	match := repo.CheckPasswordHash(password, hashedPassword)
 	if !match {
 		return credential, fmt.Errorf("invalid credentials")
 	}
@@ -87,20 +87,6 @@ func (r *repository) DeleteByID(id int) error {
 	}
 
 	return nil
-}
-
-// hashPassword implement bycrypt for password
-func hashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	return string(bytes), err
-}
-
-// checkPasswordHash check bycrypted password
-func checkPasswordHash(password, hashed string) bool {
-
-	err := bcrypt.CompareHashAndPassword([]byte(hashed), []byte(password))
-
-	return err == nil
 }
 
 func NewUserRepository(db *gorm.DB) domain.AdapterRepositoryUser {
