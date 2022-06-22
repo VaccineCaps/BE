@@ -37,6 +37,15 @@ func (r *repository) GetVaccineByID(id int) (vaccine model.Vaccines, err error) 
 	return
 }
 
+func (r *repository) UpdateVaccineByID(id int, vaccine model.Vaccines) error {
+	res := r.DB.Where("id = ?", id).UpdateColumns(&vaccine)
+	if res.RowsAffected < 1 {
+		return fmt.Errorf("error update")
+	}
+
+	return nil
+}
+
 func (r *repository) DeleteVaccineByID(id int) error {
 	res := r.DB.Delete(&model.Vaccines{
 		ID: id,
@@ -47,6 +56,7 @@ func (r *repository) DeleteVaccineByID(id int) error {
 
 	return nil
 }
+
 func NewVaccineRepository(db *gorm.DB) domain.AdapterRepositoryVaccine {
 	return &repository{
 		DB: db,

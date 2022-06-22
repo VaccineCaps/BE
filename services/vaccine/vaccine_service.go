@@ -23,6 +23,10 @@ func (s *svcVaccine) GetVaccineByID(id int) (model.Vaccines, error) {
 	return s.repo.GetVaccineByID(id)
 }
 
+func (s *svcVaccine) UpdateVaccineByID(id int, vaccine model.Vaccines) error {
+	return s.repo.UpdateVaccineByID(id, vaccine)
+}
+
 func (s *svcVaccine) DeleteVaccineByID(id int) error {
 	return s.repo.DeleteVaccineByID(id)
 }

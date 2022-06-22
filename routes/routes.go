@@ -14,6 +14,7 @@ import (
 	handlerRole "BE/handler/role"
 	handlerUser "BE/handler/user"
 	handlerVaccine "BE/handler/vaccine"
+	handlerVaccineStok "BE/handler/vaccinehospital"
 
 	// Deklarasi repository
 	repoCity "BE/repository/cities"
@@ -24,6 +25,7 @@ import (
 	repoRole "BE/repository/role"
 	repoUser "BE/repository/user"
 	repoVaccine "BE/repository/vaccine"
+	repoStokVaccine "BE/repository/vaccinehospital"
 
 	// Deklarasi Services
 	serviceCity "BE/services/cities"
@@ -34,6 +36,7 @@ import (
 	serviceRole "BE/services/role"
 	serviceUser "BE/services/user"
 	serviceVaccine "BE/services/vaccine"
+	serviceStokVaccine "BE/services/vaccinehospital"
 
 	"github.com/labstack/echo/v4"
 )
@@ -192,5 +195,25 @@ func RegisterVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/vaccine", controller.CreateVaccineController)
 	adminRoutes.GET("/vaccine", controller.GetAllVaccineController)
 	adminRoutes.GET("/vaccine/:id", controller.GetVaccineIDController)
+	adminRoutes.POST("/vaccine/:id", controller.UpdateVaccineController)
 	adminRoutes.DELETE("/vaccine/:id", controller.DeleteVaccineIDController)
+}
+
+func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoStokVaccine.NewVaccineHospitalRepository(db)
+
+	svc := serviceStokVaccine.NewServiceVaccineHospital(repo, conf)
+
+	controller := handlerVaccineStok.EchoControllerVaccineHospital{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/stok/create", controller.CreateStokHandler)
+	adminRoutes.GET("/stoks", controller.GetStokByHospitalController)
+	adminRoutes.GET("/stok", controller.GetStokByHospitalVaccineIDController)
+	adminRoutes.POST("/stok/update", controller.UpdateVaccineStokController)
+	adminRoutes.DELETE("/stok/delete", controller.DeleteHospitalVaccineIDController)
 }
