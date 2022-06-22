@@ -9,6 +9,7 @@ type AdapterRepositoryHash interface {
 	HashPassword(password string) (string, error)
 	CheckPasswordHash(password, hashed string) bool
 }
+
 type AdapterRepositoryUser interface {
 
 	// untuk user
@@ -35,10 +36,10 @@ type AdapterRepositoryRole interface {
 type AdapterRepositoryProvince interface {
 
 	// untuk Province
-	CreateProvinces(province model.Provinces) error 
-	GetAllProvince() []model.Provinces 
-	GetProvinceByID(id int) (province model.Provinces, err error) 
-	DeleteProvinceByID(id int) error 
+	CreateProvinces(province model.Provinces) error
+	GetAllProvince() []model.Provinces
+	GetProvinceByID(id int) (province model.Provinces, err error)
+	DeleteProvinceByID(id int) error
 }
 
 type AdapterRepositoryCity interface {
@@ -46,32 +47,32 @@ type AdapterRepositoryCity interface {
 	// untuk City
 	CreateCities(City model.Cities) error
 	GetAllCity() []model.Cities
-	GetCityByID(id int) (City model.Cities, err error) 
-	DeleteCityByID(id int) error 
+	GetCityByID(id int) (City model.Cities, err error)
+	DeleteCityByID(id int) error
 }
 
 type AdapterRepositoryHospital interface {
 
 	// untuk hospital
-	CreateHospitals(hospital model.Hospitals) error 
-	GetAllHospitals() []model.Hospitals 
+	CreateHospitals(hospital model.Hospitals) error
+	GetAllHospitals() []model.Hospitals
 	// GetHospitalByName(name string) (hospital model.Hospitals, err error)
 	GetHospitalByID(id int) (hospital model.Hospitals, err error)
 	UpdateHospitalByID(id int, hospital model.Hospitals) error
-	DeleteHospitalByID(id int) error 
+	DeleteHospitalByID(id int) error
 	// UpdateHospitalByName(name string, hospital model.Hospitals) error
-	// DeleteHospitalByName(name string) error 
+	// DeleteHospitalByName(name string) error
 }
 
-type AdapterRepositoryNews interface{
+type AdapterRepositoryNews interface {
 	CreateNews(news model.News) error
-	GetAllNews() []model.News 
+	GetAllNews() []model.News
 	GetNewsByID(id int) (news model.News, err error)
 	UpdateNewsByID(id int, news model.News) error
 	DeleteNewsByID(id int) error
 }
 
-type AdapterRepositoryOther interface{
+type AdapterRepositoryOther interface {
 
 	//otherperson
 	CreateOtherPerson(Other model.OtherPerson) error
@@ -79,6 +80,13 @@ type AdapterRepositoryOther interface{
 	GetOtherByID(id int) (Other model.OtherPerson, err error)
 	UpdateOtherByID(id int, Other model.OtherPerson) error
 	DeleteOtherByID(id int) error
+}
+
+type AdapterRepositoryVaccine interface {
+	CreateVaccines(vaccine model.Vaccines) error
+	GetAllVaccine() []model.Vaccines
+	GetVaccineByID(id int) (vaccine model.Vaccines, err error)
+	DeleteVaccineByID(id int) error
 }
 
 // ================================================ Service
@@ -112,9 +120,9 @@ type AdapterServiceRole interface {
 type AdapterServiceProvince interface {
 
 	//province
-	CreateProvinceService(province model.Provinces) error 
+	CreateProvinceService(province model.Provinces) error
 	GetAllProvinceService() []model.Provinces
-	GetProvinceByID(id int) (model.Provinces, error) 
+	GetProvinceByID(id int) (model.Provinces, error)
 	DeleteProvinceByID(id int) error
 }
 
@@ -127,22 +135,21 @@ type AdapterServiceCity interface {
 	DeleteCityByID(id int) error
 }
 
-type AdapterServiceHospital interface{
+type AdapterServiceHospital interface {
 
 	//hospital
-	CreateHospitalService(Hospitals model.Hospitals) error 
-	UpdateHospitalService(id int, Hospitals model.Hospitals) error 
-	GetAllHospitalsService() []model.Hospitals 
-	GetHospitalsByID(id int) (model.Hospitals, error) 
+	CreateHospitalService(Hospitals model.Hospitals) error
+	UpdateHospitalService(id int, Hospitals model.Hospitals) error
+	GetAllHospitalsService() []model.Hospitals
+	GetHospitalsByID(id int) (model.Hospitals, error)
 	// GetHospitalsByName(name string) (model.Hospitals, error)
-	DeleteHospitalByID(id int) error 
-
+	DeleteHospitalByID(id int) error
 }
 
 type AdapterServiceNews interface {
 
 	//news
-	CreateNewsService(News model.News) error 
+	CreateNewsService(News model.News) error
 	UpdateNewsService(id int, News model.News) error
 	GetAllNewsService() []model.News
 	GetNewsByID(id int) (model.News, error)
@@ -150,11 +157,18 @@ type AdapterServiceNews interface {
 }
 
 type AdapterServiceOther interface {
-	
+
 	//otherperson
 	CreateOtherService(OtherPerson model.OtherPerson) error
 	UpdateOtherService(id int, OtherPerson model.OtherPerson) error
 	GetAllOtherService() []model.OtherPerson
 	GetOtherByID(id int) (model.OtherPerson, error)
 	DeleteOtherByID(id int) error
+}
+
+type AdapterServiceVaccine interface {
+	CreateVaccineService(vaccine model.Vaccines) error
+	GetAllVaccineService() []model.Vaccines
+	GetVaccineByID(id int) (model.Vaccines, error)
+	DeleteVaccineByID(id int) error
 }
