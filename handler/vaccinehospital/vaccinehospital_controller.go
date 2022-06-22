@@ -4,6 +4,7 @@ import (
 	"BE/domain"
 	"BE/model"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -45,10 +46,13 @@ func (ce *EchoControllerVaccineHospital) UpdateVaccineStokController(c echo.Cont
 }
 
 func (ce *EchoControllerVaccineHospital) GetStokByHospitalController(c echo.Context) error {
-	stok := model.VaccineHospitals{}
-	c.Bind(&stok)
+	hospital_id := c.Param("hospital_id")
+	HospitalID, err := strconv.Atoi(hospital_id)
+	if err != nil {
 
-	res, err := ce.Svc.GetAllStokByHospitalService(stok.HospitalId)
+	}
+
+	res, err := ce.Svc.GetAllStokByHospitalService(HospitalID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
@@ -57,15 +61,20 @@ func (ce *EchoControllerVaccineHospital) GetStokByHospitalController(c echo.Cont
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"messages": "success",
-		"users":    res,
+		"stoks":    res,
 	})
 }
 
 func (ce *EchoControllerVaccineHospital) GetStokByHospitalVaccineIDController(c echo.Context) error {
-	stok := model.VaccineHospitals{}
-	c.Bind(&stok)
+	hospital_id := c.Param("hospital_id")
+	HospitalID, err := strconv.Atoi(hospital_id)
+	vaccine_id := c.Param("vaccine_id")
+	VaccineID, err := strconv.Atoi(vaccine_id)
+	if err != nil {
 
-	res, err := ce.Svc.GetStokByHospitalVaccineService(stok.HospitalId, stok.VaccineId)
+	}
+
+	res, err := ce.Svc.GetStokByHospitalVaccineService(HospitalID, VaccineID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
@@ -74,7 +83,7 @@ func (ce *EchoControllerVaccineHospital) GetStokByHospitalVaccineIDController(c 
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"messages": "success",
-		"users":    res,
+		"stoks":    res,
 	})
 }
 

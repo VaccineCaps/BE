@@ -95,7 +95,7 @@ type AdapterRepositoryVaccineHospital interface {
 	// Hospital Stok Vaccine
 	CreateStokVaccineHospital(stok model.VaccineHospitals) error
 	UpdateStokByID(hospital_id, vaccine_id int, stok model.VaccineHospitals) error
-	GetAllStokByHospital(hospital_id int) (stok model.VaccineHospitals, err error)
+	GetAllStokByHospital(hospital_id int) (stok []model.VaccineHospitals, err error)
 	GetStokByHospitalVaccine(hospital_id, vaccine_id int) (stok model.VaccineHospitals, err error)
 	DeleteVaccineStokByID(hospital_id, vaccine_id int) error
 }
@@ -190,7 +190,7 @@ type AdapterServiceVaccineHospital interface {
 	// Hospital Stok Vaccine
 	CreateStokService(stok model.VaccineHospitals) error
 	UpdateVaccineStokService(hospital_id, vaccine_id int, stok model.VaccineHospitals) error
-	GetAllStokByHospitalService(hospital_id int) (stok model.VaccineHospitals, err error)
+	GetAllStokByHospitalService(hospital_id int) (stok []model.VaccineHospitals, err error)
 	GetStokByHospitalVaccineService(hospital_id, vaccine_id int) (stok model.VaccineHospitals, err error)
 	DeleteVaccineStokByIDService(hospital_id, vaccine_id int) error
 }
