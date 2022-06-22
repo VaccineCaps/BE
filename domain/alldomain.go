@@ -5,7 +5,10 @@ import (
 )
 
 // ================================================ Repository
-
+type AdapterRepositoryHash interface {
+	HashPassword(password string) (string, error)
+	CheckPasswordHash(password, hashed string) bool
+}
 type AdapterRepositoryUser interface {
 
 	// untuk user
@@ -79,6 +82,10 @@ type AdapterRepositoryOther interface{
 }
 
 // ================================================ Service
+type AdapterServiceHash interface {
+	HashPasswordService(password string) (string, error)
+	CheckPasswordHashService(password, hashed string) bool
+}
 
 type AdapterServiceUser interface {
 
