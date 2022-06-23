@@ -12,6 +12,7 @@ import (
 	handlerOP "BE/handler/otherperson"
 	handlerProvince "BE/handler/province"
 	handlerRole "BE/handler/role"
+	handlerSession "BE/handler/session"
 	handlerUser "BE/handler/user"
 	handlerVaccine "BE/handler/vaccine"
 	handlerVaccineStok "BE/handler/vaccinehospital"
@@ -23,6 +24,7 @@ import (
 	repoOP "BE/repository/otherperson"
 	repoProvince "BE/repository/province"
 	repoRole "BE/repository/role"
+	repoSession "BE/repository/session"
 	repoUser "BE/repository/user"
 	repoVaccine "BE/repository/vaccine"
 	repoStokVaccine "BE/repository/vaccinehospital"
@@ -34,6 +36,7 @@ import (
 	serviceOP "BE/services/otherperson"
 	serviceProvince "BE/services/province"
 	serviceRole "BE/services/role"
+	serviceSession "BE/services/session"
 	serviceUser "BE/services/user"
 	serviceVaccine "BE/services/vaccine"
 	serviceStokVaccine "BE/services/vaccinehospital"
@@ -211,9 +214,28 @@ func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 
 	adminRoutes := e.Group("admin")
 	adminRoutes.Use(middleware.CheckTokenAdmin)
-	adminRoutes.POST("/stok/create", controller.CreateStokHandler)
+	adminRoutes.POST("/stok", controller.CreateStokHandler)
 	adminRoutes.GET("/stok/:hospital_id", controller.GetStokByHospitalController)
 	adminRoutes.GET("/stok/:hospital_id/:vaccine_id", controller.GetStokByHospitalVaccineIDController)
-	adminRoutes.POST("/stok/update", controller.UpdateVaccineStokController)
-	adminRoutes.DELETE("/stok/delete", controller.DeleteHospitalVaccineIDController)
+	adminRoutes.POST("/stok/:hospital_id/:vaccine_id", controller.UpdateVaccineStokController)
+	adminRoutes.DELETE("/stok/:hospital_id/:vaccine_id", controller.DeleteHospitalVaccineIDController)
+}
+
+func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoSession.NewSessionRepository(db)
+
+	svc := serviceSession.NewServiceSession(repo, conf)
+
+	controller := handlerSession.EchoControllerSession{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/session", controller.CreateSessionHandler)
+	adminRoutes.GET("/session/:hospital_id", controller.GetSessionByHospitalController)
+	adminRoutes.GET("/session/:hospital_id/:vaccine_id", controller.GetSessionByHospitalVaccineIDController)
+	adminRoutes.POST("/session/:hospital_id/:vaccine_id", controller.UpdateVaccineSessionController)
+	adminRoutes.DELETE("/session/:hospital_id/:vaccine_id", controller.DeleteSessionIDController)
 }

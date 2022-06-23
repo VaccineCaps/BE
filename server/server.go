@@ -20,5 +20,6 @@ func Server() *echo.Echo {
 	routes.RegisterOPsGroupAPI(app, conf)
 	routes.RegisterVaccineGroupAPI(app, conf)
 	routes.RegisterStokVaccineGroupAPI(app, conf)
+	routes.RegisterSessionGroupAPI(app, conf)
 	return app
 }
