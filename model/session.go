@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type Session struct {
 	ID         int       `json:"id" gorm:"PrimaryKey;AUTO_INCREMENT;column:id"`
 	HospitalId int       `gorm:"not null" json:"hospital_id"`
@@ -8,7 +10,7 @@ type Session struct {
 	Vaccine    Vaccines  `gorm:"ForeignKey:VaccineId;references:ID;null" json:"-"`
 	Waktu      string    `gorm:"not null" json:"waktu"`
 	MaxSession int       `gorm:"not null" json:"max_session"`
-	Jadwal     string    `json:"jadwal"`
+	Jadwal     time.Time `json:"jadwal"`
 }
 
 func (*Session) TableName() string {
