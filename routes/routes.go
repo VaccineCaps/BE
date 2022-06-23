@@ -5,15 +5,18 @@ import (
 	"BE/database"
 	"BE/helper/middleware"
 
-	// Deklarasi Handler 
-	handlerUser 	"BE/handler/user"
-	handlerRole 	"BE/handler/role"
-	handlerProvince "BE/handler/province"
-	handlerCities	"BE/handler/cities"
-	handlerHospital "BE/handler/hospital"
-	handlerNews		"BE/handler/news"
-	handlerOP 		"BE/handler/otherperson"
-	handlerVStatus	"BE/handler/vaccine_status"
+	// Deklarasi Handler
+	handlerCities 		"BE/handler/cities"
+	handlerHospital 	"BE/handler/hospital"
+	handlerOP 			"BE/handler/otherperson"
+	handlerVStatus		"BE/handler/vaccine_status"
+	handlerNews 		"BE/handler/news"
+	handlerProvince 	"BE/handler/province"
+	handlerRole 		"BE/handler/role"
+	handlerSession 		"BE/handler/session"
+	handlerUser 		"BE/handler/user"
+	handlerVaccine 		"BE/handler/vaccine"
+	handlerVaccineStok 	"BE/handler/vaccinehospital"
 
 	// Deklarasi repository 
 	repoRole 		"BE/repository/role"
@@ -24,6 +27,9 @@ import (
 	repoNews 		"BE/repository/news"
 	repoOP			"BE/repository/otherperson"
 	repoVStatus 	"BE/repository/vaccine_status"
+	repoVaccine 	"BE/repository/vaccine"
+	repoStokVaccine "BE/repository/vaccinehospital"
+	repoSession 	"BE/repository/session"
 
 	// Deklarasi Services 
 	serviceRole 		"BE/services/role"
@@ -33,7 +39,10 @@ import (
 	serviceHospital 	"BE/services/hospitals"
 	serviceNews			"BE/services/news"
 	serviceOP 			"BE/services/otherperson"
-	serviceVStatus			"BE/services/vaccine_status"
+	serviceVStatus		"BE/services/vaccine_status"
+	serviceSession 		"BE/services/session"
+	serviceStokVaccine 	"BE/services/vaccinehospital"
+	serviceVaccine 		"BE/services/vaccine"
 
 	"github.com/labstack/echo/v4"
 )
@@ -158,7 +167,7 @@ func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/news/:id", controller.DeleteNewsController)
 }
 
-func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
+func RegisterOPsGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
 	repo := repoOP.NewOtherRepository(db)
 
@@ -183,6 +192,65 @@ func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
 	userRoutes.GET("/others/:id", controller.GetOtherIDController)
 }
 
+
+func RegisterVaccineGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoVaccine.NewVaccineRepository(db)
+
+	svc := serviceVaccine.NewServiceVaccine(repo, conf)
+
+	controller := handlerVaccine.EchoControllerVaccine{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	
+	adminRoutes.POST("/vaccine", controller.CreateVaccineController)
+	adminRoutes.GET("/vaccine", controller.GetAllVaccineController)
+	adminRoutes.GET("/vaccine/:id", controller.GetVaccineIDController)
+	adminRoutes.POST("/vaccine/:id", controller.UpdateVaccineController)
+	adminRoutes.DELETE("/vaccine/:id", controller.DeleteVaccineIDController)
+}
+
+func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoStokVaccine.NewVaccineHospitalRepository(db)
+
+	svc := serviceStokVaccine.NewServiceVaccineHospital(repo, conf)
+
+	controller := handlerVaccineStok.EchoControllerVaccineHospital{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/stok", controller.CreateStokHandler)
+	adminRoutes.GET("/stok/:hospital_id", controller.GetStokByHospitalController)
+	adminRoutes.GET("/stok/:hospital_id/:vaccine_id", controller.GetStokByHospitalVaccineIDController)
+	adminRoutes.POST("/stok/:hospital_id/:vaccine_id", controller.UpdateVaccineStokController)
+	adminRoutes.DELETE("/stok/:hospital_id/:vaccine_id", controller.DeleteHospitalVaccineIDController)
+}
+
+func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoSession.NewSessionRepository(db)
+
+	svc := serviceSession.NewServiceSession(repo, conf)
+
+	controller := handlerSession.EchoControllerSession{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/session", controller.CreateSessionHandler)
+	adminRoutes.GET("/session/:hospital_id", controller.GetSessionByHospitalController)
+	adminRoutes.GET("/session/:hospital_id/:vaccine_id", controller.GetSessionByHospitalVaccineIDController)
+	adminRoutes.POST("/session/:hospital_id/:vaccine_id", controller.UpdateVaccineSessionController)
+	adminRoutes.DELETE("/session/:hospital_id/:vaccine_id", controller.DeleteSessionIDController)
+}
+
 func RegisterVStatussGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
 	repo := repoVStatus.NewVStatusRepository(db)
@@ -194,7 +262,6 @@ func RegisterVStatussGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
 	adminRoutes.POST("/vstatus", controller.CreateVStatusController)
 	adminRoutes.GET("/vstatus", controller.GetAllVStatusController)
 	adminRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)

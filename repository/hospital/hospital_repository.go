@@ -4,6 +4,7 @@ import (
 	"BE/domain"
 	"BE/model"
 	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -19,7 +20,6 @@ func (r *repository) CreateHospitals(hospital model.Hospitals) error {
 
 	return nil
 }
-
 
 func (r *repository) GetAllHospitals() []model.Hospitals {
 	hospitals := []model.Hospitals{}
