@@ -116,6 +116,16 @@ type AdapterRepositoryVStatus interface{
 	DeleteVStatusByID(id int) error
 }
 
+type AdapterRepositoryBooking interface{
+	CreateBooking(booking model.Booking) error
+	GetAllBooking() []model.Booking
+	GetAllBookingByUsers(user_id int) (booking []model.Booking, err error)
+	GetAllBookingBySessions(session_id int) (booking []model.Booking, err error)
+	GetBookingsByID(id int) (booking model.Booking, err error)
+	DeleteBookingByID(user_id, hospital_id, session_id, vaccinestatus_id int) error
+
+}
+
 // ================================================ Service
 type AdapterServiceHash interface {
 	HashPasswordService(password string) (string, error)
@@ -225,4 +235,13 @@ type AdapterServiceVStatus interface{
 	GetVStatusByID(id int) (model.VaccineStatus, error)
 	UpdateVStatusService(id int, vStatus model.VaccineStatus) error
 	DeleteVStatusByID(id int) error
+}
+
+type AdapterServiceBooking interface{
+	CreateBookingService(booking model.Booking) error
+	GetAllBookingService() []model.Booking
+	GetBookingByUserService(user_id int) (booking []model.Booking, err error)
+	GetAllBookingBySessionsService(session_id int) (booking []model.Booking, err error)
+	GetBookingsByIDService(id int) (booking model.Booking, err error)
+	DeleteBookingByIDService(user_id, hospital_id, session_id, vaccinestatus_id int) error
 }

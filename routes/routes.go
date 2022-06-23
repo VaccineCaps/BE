@@ -17,6 +17,7 @@ import (
 	handlerUser 		"BE/handler/user"
 	handlerVaccine 		"BE/handler/vaccine"
 	handlerVaccineStok 	"BE/handler/vaccinehospital"
+	handlerBooking		"BE/handler/booking"
 
 	// Deklarasi repository 
 	repoRole 		"BE/repository/role"
@@ -30,6 +31,7 @@ import (
 	repoVaccine 	"BE/repository/vaccine"
 	repoStokVaccine "BE/repository/vaccinehospital"
 	repoSession 	"BE/repository/session"
+	repoBooking 	"BE/repository/booking"
 
 	// Deklarasi Services 
 	serviceRole 		"BE/services/role"
@@ -43,6 +45,7 @@ import (
 	serviceSession 		"BE/services/session"
 	serviceStokVaccine 	"BE/services/vaccinehospital"
 	serviceVaccine 		"BE/services/vaccine"
+	serviceBooking 		"BE/services/booking"
 
 	"github.com/labstack/echo/v4"
 )
@@ -251,7 +254,7 @@ func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/session/:hospital_id/:vaccine_id", controller.DeleteSessionIDController)
 }
 
-func RegisterVStatussGroupAPI(e *echo.Echo, conf config.Config) {
+func RegisterVStatusGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
 	repo := repoVStatus.NewVStatusRepository(db)
 
@@ -273,3 +276,23 @@ func RegisterVStatussGroupAPI(e *echo.Echo, conf config.Config) {
 	userRoutes.GET("/vstatus", controller.GetAllVStatusController)
 	userRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
 }
+
+func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoBooking.NewBookingRepository(db)
+
+	svc := serviceBooking.NewServiceBooking(repo, conf)
+
+	controller := handlerBooking.EchoControllerBooking{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/booking", controller.CreateBookingHandler)
+	adminRoutes.GET("/booking", controller.GetAllBookingController)
+	adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
+	adminRoutes.GET("/booking/:session_id", controller.GetBookingBySessionController)
+	adminRoutes.DELETE("/stok/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
+}
+
