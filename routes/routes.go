@@ -13,6 +13,7 @@ import (
 	handlerHospital "BE/handler/hospital"
 	handlerNews		"BE/handler/news"
 	handlerOP 		"BE/handler/otherperson"
+	handlerVStatus	"BE/handler/vaccine_status"
 
 	// Deklarasi repository 
 	repoRole 		"BE/repository/role"
@@ -22,6 +23,7 @@ import (
 	repoHospital 	"BE/repository/hospital"
 	repoNews 		"BE/repository/news"
 	repoOP			"BE/repository/otherperson"
+	repoVStatus 	"BE/repository/vaccine_status"
 
 	// Deklarasi Services 
 	serviceRole 		"BE/services/role"
@@ -31,6 +33,7 @@ import (
 	serviceHospital 	"BE/services/hospitals"
 	serviceNews			"BE/services/news"
 	serviceOP 			"BE/services/otherperson"
+	serviceVStatus			"BE/services/vaccine_status"
 
 	"github.com/labstack/echo/v4"
 )
@@ -131,8 +134,8 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 
 	userRoutes := e.Group("user")
 	userRoutes.Use(middleware.CheckTokenUser)
-	adminRoutes.GET("/hospitals", controller.GetHospitalController)
-	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
+	userRoutes.GET("/hospitals", controller.GetHospitalController)
+	userRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
 
 }
 
@@ -172,4 +175,34 @@ func RegisteOPsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/others/:id", controller.GetOtherIDController)
 	adminRoutes.PUT("/others/:id", controller.UpdateOtherController)
 	adminRoutes.DELETE("/others/:id", controller.DeleteOtherController)
+
+	userRoutes := e.Group("user")
+	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.POST("/others", controller.CreateOtherController)
+	userRoutes.GET("/others", controller.GetOtherController)
+	userRoutes.GET("/others/:id", controller.GetOtherIDController)
+}
+
+func RegisterVStatussGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoVStatus.NewVStatusRepository(db)
+
+	svc := serviceVStatus.NewServiceVStatus(repo, conf)
+
+	controller := handlerVStatus.EchoControllerVStatus{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/vstatus", controller.CreateVStatusController)
+	adminRoutes.GET("/vstatus", controller.GetAllVStatusController)
+	adminRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
+	adminRoutes.PUT("/vstatus/:id", controller.UpdateVStatusController)
+	adminRoutes.DELETE("/vstatus/:id", controller.DeleteVStatusIDController)
+
+	userRoutes := e.Group("user")
+	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.GET("/vstatus", controller.GetAllVStatusController)
+	userRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
 }

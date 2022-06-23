@@ -61,6 +61,8 @@ type AdapterRepositoryHospital interface {
 }
 
 type AdapterRepositoryNews interface{
+
+	//news
 	CreateNews(news model.News) error
 	GetAllNews() []model.News 
 	GetNewsByID(id int) (news model.News, err error)
@@ -76,6 +78,15 @@ type AdapterRepositoryOther interface{
 	GetOtherByID(id int) (Other model.OtherPerson, err error)
 	UpdateOtherByID(id int, Other model.OtherPerson) error
 	DeleteOtherByID(id int) error
+}
+
+type AdapterRepositoryVStatus interface{
+	CreateVStatus(vStatus model.VaccineStatus) error
+	GetAllVStatus() []model.VaccineStatus
+	GetVStatusByID(id int) (vStatus model.VaccineStatus, err error)
+	UpdateVStatusByID(id int, vStatus model.VaccineStatus) error
+	DeleteVStatusByID(id int) error
+
 }
 
 // ================================================ Service
@@ -150,4 +161,12 @@ type AdapterServiceOther interface {
 	GetAllOtherService() []model.OtherPerson
 	GetOtherByID(id int) (model.OtherPerson, error)
 	DeleteOtherByID(id int) error
+}
+
+type AdapterServiceVStatus interface{
+	CreateVStatusService(vStatus model.VaccineStatus) error
+	GetAllVStatusService() []model.VaccineStatus
+	GetVStatusByID(id int) (model.VaccineStatus, error)
+	UpdateVStatusService(id int, vStatus model.VaccineStatus) error
+	DeleteVStatusByID(id int) error
 }
