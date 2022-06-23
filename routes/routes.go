@@ -18,6 +18,7 @@ import (
 	handlerVaccine 		"BE/handler/vaccine"
 	handlerVaccineStok 	"BE/handler/vaccinehospital"
 	handlerBooking		"BE/handler/booking"
+	handlerDetailBook	"BE/handler/detailbook"
 
 	// Deklarasi repository 
 	repoRole 		"BE/repository/role"
@@ -32,6 +33,7 @@ import (
 	repoStokVaccine "BE/repository/vaccinehospital"
 	repoSession 	"BE/repository/session"
 	repoBooking 	"BE/repository/booking"
+	repoDetailBook 	"BE/repository/detailbook"
 
 	// Deklarasi Services 
 	serviceRole 		"BE/services/role"
@@ -46,6 +48,7 @@ import (
 	serviceStokVaccine 	"BE/services/vaccinehospital"
 	serviceVaccine 		"BE/services/vaccine"
 	serviceBooking 		"BE/services/booking"
+	serviceDetailBook	"BE/services/detailBook"
 
 	"github.com/labstack/echo/v4"
 )
@@ -293,6 +296,35 @@ func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/booking", controller.GetAllBookingController)
 	adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
 	adminRoutes.GET("/booking/:session_id", controller.GetBookingBySessionController)
-	adminRoutes.DELETE("/stok/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
+	adminRoutes.DELETE("/booking/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
+
+	userRoutes := e.Group("user")
+	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
+
+}
+
+func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoDetailBook.NewBookingDetailRepository(db)
+
+	svc := serviceDetailBook.NewServiceBookingDetail(repo, conf)
+
+	controller := handlerDetailBook.EchoControllerBookingDetail{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/detail", controller.CreateBookingDetailHandler)
+	adminRoutes.GET("/detail", controller.GetAllBookingDetailController)
+	adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
+	adminRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
+	adminRoutes.GET("/detail/:otherperson_id", controller.GetBookingDetailByOPController)
+	adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
+
+	userRoutes := e.Group("user")
+	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
 }
 

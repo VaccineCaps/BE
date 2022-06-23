@@ -126,6 +126,16 @@ type AdapterRepositoryBooking interface{
 
 }
 
+type AdapterRepositoryBookingDetail interface{
+	CreateBookingDetail(book model.BookingDetail) error
+	GetDetailByID(id int) (booking model.BookingDetail, err error)
+	GetAllBookingDetail() []model.BookingDetail
+	GetDetailByUsers(user_id int) (booking []model.BookingDetail, err error)
+	GetDetailByOtherPerson(otherperson_id int) (booking []model.BookingDetail, err error)
+	GetDetailByBookings(booking_id int) (booking []model.BookingDetail, err error)
+
+}
+
 // ================================================ Service
 type AdapterServiceHash interface {
 	HashPasswordService(password string) (string, error)
@@ -244,4 +254,13 @@ type AdapterServiceBooking interface{
 	GetAllBookingBySessionsService(session_id int) (booking []model.Booking, err error)
 	GetBookingsByIDService(id int) (booking model.Booking, err error)
 	DeleteBookingByIDService(user_id, hospital_id, session_id, vaccinestatus_id int) error
+}
+
+type AdapterServiceBookingDetail interface{
+	CreateBookingDetailService(booking model.BookingDetail) error
+	GetAllDetailService() []model.BookingDetail
+	GetBookingsByIDService(id int) (booking model.BookingDetail, err error)
+	GetBookingDetailByUserService(user_id int) (booking []model.BookingDetail, err error)
+	GetBookingDetailByOtherPersonService(otherperson_id int) (booking []model.BookingDetail, err error)
+	GetBookingDetailByBookingsService(booking_id int) (booking []model.BookingDetail, err error)
 }
