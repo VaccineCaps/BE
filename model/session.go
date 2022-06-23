@@ -8,7 +8,7 @@ type Session struct {
 	Vaccine    Vaccines  `gorm:"ForeignKey:VaccineId;references:ID;null" json:"-"`
 	Waktu      string    `gorm:"not null" json:"waktu"`
 	MaxSession int       `gorm:"not null" json:"max_session"`
-	Jadwal     string    `gorm:"not null" json:"jadwal"`
+	Jadwal     string    `json:"jadwal"`
 }
 
 func (*Session) TableName() string {

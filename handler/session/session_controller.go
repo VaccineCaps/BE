@@ -55,7 +55,7 @@ func (ce *EchoControllerSession) GetSessionByHospitalController(c echo.Context) 
 	res, err := ce.Svc.GetAllSessionByHospitalService(HospitalID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"messages": "no id or no delete",
+			"messages": "no session available",
 		})
 	}
 
@@ -77,7 +77,7 @@ func (ce *EchoControllerSession) GetSessionByHospitalVaccineIDController(c echo.
 	res, err := ce.Svc.GetSessionByHospitalVaccineService(HospitalID, VaccineID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"messages": "no id or no delete",
+			"messages": "no session available",
 		})
 	}
 
