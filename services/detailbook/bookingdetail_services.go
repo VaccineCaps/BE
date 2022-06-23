@@ -1,4 +1,4 @@
-package services
+package service
 
 import (
 	config "BE/configs"
@@ -19,7 +19,7 @@ func (s *svcBookingDetail) GetAllDetailService() []model.BookingDetail {
 	return s.repo.GetAllBookingDetail()
 }
 
-func (s *svcBookingDetail) GetBookingsByIDService(id int) (booking model.BookingDetail, err error)  {
+func (s *svcBookingDetail) GetBookingsByIDService(id int) (booking model.BookingDetail, err error) {
 	return s.repo.GetDetailByID(id)
 }
 

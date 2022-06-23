@@ -108,7 +108,7 @@ type AdapterRepositorySession interface {
 	DeleteSessionByID(hospital_id, vaccine_id int) error
 }
 
-type AdapterRepositoryVStatus interface{
+type AdapterRepositoryVStatus interface {
 	CreateVStatus(vStatus model.VaccineStatus) error
 	GetAllVStatus() []model.VaccineStatus
 	GetVStatusByID(id int) (vStatus model.VaccineStatus, err error)
@@ -116,24 +116,30 @@ type AdapterRepositoryVStatus interface{
 	DeleteVStatusByID(id int) error
 }
 
-type AdapterRepositoryBooking interface{
+type AdapterRepositoryBooking interface {
 	CreateBooking(booking model.Booking) error
 	GetAllBooking() []model.Booking
 	GetAllBookingByUsers(user_id int) (booking []model.Booking, err error)
 	GetAllBookingBySessions(session_id int) (booking []model.Booking, err error)
 	GetBookingsByID(id int) (booking model.Booking, err error)
 	DeleteBookingByID(user_id, hospital_id, session_id, vaccinestatus_id int) error
-
 }
 
-type AdapterRepositoryBookingDetail interface{
+type AdapterRepositoryBookingDetail interface {
 	CreateBookingDetail(book model.BookingDetail) error
 	GetDetailByID(id int) (booking model.BookingDetail, err error)
 	GetAllBookingDetail() []model.BookingDetail
 	GetDetailByUsers(user_id int) (booking []model.BookingDetail, err error)
 	GetDetailByOtherPerson(otherperson_id int) (booking []model.BookingDetail, err error)
 	GetDetailByBookings(booking_id int) (booking []model.BookingDetail, err error)
+}
 
+type AdapterRepositoryVaccineTransaction interface {
+	CreateVaccinesTransaction(transaction model.VaccineTransactions) error
+	UpdateTransactionByID(hospital_id, vaccine_id int, transaction model.VaccineTransactions) error
+	GetAllTransactionByHospital(hospital_id int) (transaction []model.VaccineTransactions, err error)
+	GetTransactionByHospitalVaccine(hospital_id, vaccine_id int) (transaction model.VaccineTransactions, err error)
+	DeleteVaccineTransactionByID(hospital_id, vaccine_id int) error
 }
 
 // ================================================ Service
@@ -239,7 +245,7 @@ type AdapterServiceSession interface {
 	DeleteSessionByIDService(hospital_id, vaccine_id int) error
 }
 
-type AdapterServiceVStatus interface{
+type AdapterServiceVStatus interface {
 	CreateVStatusService(vStatus model.VaccineStatus) error
 	GetAllVStatusService() []model.VaccineStatus
 	GetVStatusByID(id int) (model.VaccineStatus, error)
@@ -247,7 +253,7 @@ type AdapterServiceVStatus interface{
 	DeleteVStatusByID(id int) error
 }
 
-type AdapterServiceBooking interface{
+type AdapterServiceBooking interface {
 	CreateBookingService(booking model.Booking) error
 	GetAllBookingService() []model.Booking
 	GetBookingByUserService(user_id int) (booking []model.Booking, err error)
@@ -256,11 +262,19 @@ type AdapterServiceBooking interface{
 	DeleteBookingByIDService(user_id, hospital_id, session_id, vaccinestatus_id int) error
 }
 
-type AdapterServiceBookingDetail interface{
+type AdapterServiceBookingDetail interface {
 	CreateBookingDetailService(booking model.BookingDetail) error
 	GetAllDetailService() []model.BookingDetail
 	GetBookingsByIDService(id int) (booking model.BookingDetail, err error)
 	GetBookingDetailByUserService(user_id int) (booking []model.BookingDetail, err error)
 	GetBookingDetailByOtherPersonService(otherperson_id int) (booking []model.BookingDetail, err error)
 	GetBookingDetailByBookingsService(booking_id int) (booking []model.BookingDetail, err error)
+}
+
+type AdapterServiceVaccineTransaction interface {
+	CreateVaccinesTransactionService(transaction model.VaccineTransactions) error
+	UpdateTransactionByIDService(hospital_id, vaccine_id int, transaction model.VaccineTransactions) error
+	GetAllTransactionByHospitalService(hospital_id int) (transaction []model.VaccineTransactions, err error)
+	GetTransactionByHospitalVaccineService(hospital_id, vaccine_id int) (transaction model.VaccineTransactions, err error)
+	DeleteVaccineTransactionByIDService(hospital_id, vaccine_id int) error
 }
