@@ -100,6 +100,14 @@ type AdapterRepositoryVaccineHospital interface {
 	DeleteVaccineStokByID(hospital_id, vaccine_id int) error
 }
 
+type AdapterRepositorySession interface {
+	CreateSession(session model.Session) error
+	UpdateSessionByID(hospital_id, vaccine_id int, session model.Session) error
+	GetAllSession(hospital_id int) (session []model.Session, err error)
+	GetSessionByHospitalVaccine(hospital_id, vaccine_id int) (session model.Session, err error)
+	DeleteSessionByID(hospital_id, vaccine_id int) error
+}
+
 // ================================================ Service
 type AdapterServiceHash interface {
 	HashPasswordService(password string) (string, error)
@@ -193,4 +201,12 @@ type AdapterServiceVaccineHospital interface {
 	GetAllStokByHospitalService(hospital_id int) (stok []model.VaccineHospitals, err error)
 	GetStokByHospitalVaccineService(hospital_id, vaccine_id int) (stok model.VaccineHospitals, err error)
 	DeleteVaccineStokByIDService(hospital_id, vaccine_id int) error
+}
+
+type AdapterServiceSession interface {
+	CreateSessionService(session model.Session) error
+	UpdateSessionService(hospital_id, vaccine_id int, session model.Session) error
+	GetAllSessionByHospitalService(hospital_id int) (session []model.Session, err error)
+	GetSessionByHospitalVaccineService(hospital_id, vaccine_id int) (session model.Session, err error)
+	DeleteSessionByIDService(hospital_id, vaccine_id int) error
 }
