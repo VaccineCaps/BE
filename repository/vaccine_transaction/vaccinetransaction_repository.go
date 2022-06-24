@@ -33,6 +33,7 @@ func (r *repository) UpdateTransactionByID(hospital_id, vaccine_id int, transact
 
 func (r *repository) GetAllTransactionByHospital(hospital_id int) (transaction []model.VaccineTransactions, err error) {
 	res := r.DB.Where("hospital_id = ? ", hospital_id).Find(&transaction)
+	fmt.Println(res.Error)
 	if res.RowsAffected < 1 {
 		err = fmt.Errorf("not found")
 	}

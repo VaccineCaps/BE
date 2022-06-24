@@ -17,7 +17,7 @@ var (
 func InitDB(conf config.Config) *gorm.DB {
 
 	conectionString := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
 		conf.DB_USERNAME,
 		conf.DB_PASSWORD,
 		conf.DB_HOST,
@@ -43,7 +43,7 @@ func InitDB(conf config.Config) *gorm.DB {
 	DB.AutoMigrate(&model.VaccineStatus{})
 	DB.AutoMigrate(&model.Booking{})
 	DB.AutoMigrate(&model.BookingDetail{})
-
+	DB.AutoMigrate(&model.VaccineTransactions{})
 
 	return DB
 
