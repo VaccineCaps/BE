@@ -4,6 +4,8 @@ import (
 	config "BE/configs"
 	"BE/domain"
 	"BE/model"
+	"fmt"
+	"time"
 )
 
 type svcVaccine struct {
@@ -12,6 +14,7 @@ type svcVaccine struct {
 }
 
 func (s *svcVaccine) CreateVaccinesTransactionService(transaction model.VaccineTransactions) error {
+	transaction.Tanggal = time.Now()
 	return s.repo.CreateVaccinesTransaction(transaction)
 }
 
@@ -21,7 +24,10 @@ func (s *svcVaccine) UpdateTransactionByIDService(hospital_id, vaccine_id int, t
 
 func (s *svcVaccine) GetAllTransactionByHospitalService(hospital_id int) (transaction []model.VaccineTransactions, err error) {
 
-	return s.repo.GetAllTransactionByHospital(hospital_id)
+	// return s.repo.GetAllTransactionByHospital(hospital_id)
+	transaction, err = s.repo.GetAllTransactionByHospital(hospital_id)
+	fmt.Println(transaction)
+	return
 }
 
 func (s *svcVaccine) GetTransactionByHospitalVaccineService(hospital_id, vaccine_id int) (transaction model.VaccineTransactions, err error) {

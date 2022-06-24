@@ -17,7 +17,7 @@ var (
 func InitDB(conf config.Config) *gorm.DB {
 
 	conectionString := fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=true",
 		conf.DB_USERNAME,
 		conf.DB_PASSWORD,
 		conf.DB_HOST,
@@ -30,20 +30,7 @@ func InitDB(conf config.Config) *gorm.DB {
 		fmt.Println("error open conection : ", err)
 	}
 
-	DB.AutoMigrate(&model.Role{})
-	DB.AutoMigrate(&model.User{})
-	DB.AutoMigrate(&model.Provinces{})
-	DB.AutoMigrate(&model.Cities{})
-	DB.AutoMigrate(&model.Hospitals{})
-	DB.AutoMigrate(&model.News{})
-	DB.AutoMigrate(&model.OtherPerson{})
-	DB.AutoMigrate(&model.Vaccines{})
-	DB.AutoMigrate(&model.VaccineHospitals{})
-	DB.AutoMigrate(&model.Session{})
-	DB.AutoMigrate(&model.VaccineStatus{})
-	DB.AutoMigrate(&model.Booking{})
-	DB.AutoMigrate(&model.BookingDetail{})
-
+	DB.AutoMigrate(&model.Role{}, &model.User{}, &model.Provinces{}, &model.Cities{}, &model.Hospitals{}, &model.News{}, &model.OtherPerson{}, &model.Vaccines{}, &model.VaccineHospitals{}, &model.Session{}, &model.VaccineStatus{}, &model.Booking{}, &model.BookingDetail{}, &model.VaccineTransactions{})
 
 	return DB
 
