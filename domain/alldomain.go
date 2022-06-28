@@ -142,6 +142,14 @@ type AdapterRepositoryVaccineTransaction interface {
 	DeleteVaccineTransactionByID(hospital_id, vaccine_id int) error
 }
 
+type AdapterRepositoryAdvertise interface {
+	CreateAdvertise(advertise model.Advertise) error
+	GetAllAdvertise() []model.Advertise
+	GetAdvertiseByID(id int) (advertise model.Advertise, err error)
+	UpdateAdvertiseByID(id int, advertise model.Advertise) error
+	DeleteAdvertiseByID(id int) error
+}
+
 // ================================================ Service
 type AdapterServiceHash interface {
 	HashPasswordService(password string) (string, error)
@@ -277,4 +285,12 @@ type AdapterServiceVaccineTransaction interface {
 	GetAllTransactionByHospitalService(hospital_id int) (transaction []model.VaccineTransactions, err error)
 	GetTransactionByHospitalVaccineService(hospital_id, vaccine_id int) (transaction model.VaccineTransactions, err error)
 	DeleteVaccineTransactionByIDService(hospital_id, vaccine_id int) error
+}
+
+type AdapterServiceAdvertise interface {
+	CreateAdvertiseService(Advertise model.Advertise) error
+	UpdateAdvertiseService(id int, Advertise model.Advertise) error
+	GetAllAdvertiseService() []model.Advertise
+	GetAdvertiseByID(id int) (model.Advertise, error)
+	DeleteAdvertiseByID(id int) error
 }

@@ -20,6 +20,7 @@ import (
 	handlerVStatus "BE/handler/vaccine_status"
 	handlerTransaction "BE/handler/vaccine_transaction"
 	handlerVaccineStok "BE/handler/vaccinehospital"
+	handlerAdvertise "BE/handler/advertise"
 
 	// Deklarasi repository
 	repoBooking "BE/repository/booking"
@@ -36,6 +37,7 @@ import (
 	repoVStatus "BE/repository/vaccine_status"
 	repoTransaction "BE/repository/vaccine_transaction"
 	repoStokVaccine "BE/repository/vaccinehospital"
+	repoAdvertise "BE/repository/advertise"
 
 	// Deklarasi Services
 	serviceBooking "BE/services/booking"
@@ -52,6 +54,7 @@ import (
 	serviceVStatus "BE/services/vaccine_status"
 	serviceTransaction "BE/services/vaccine_transaction"
 	serviceStokVaccine "BE/services/vaccinehospital"
+	serviceAdvertise "BE/services/advertise"
 
 	"github.com/labstack/echo/v4"
 )
@@ -347,4 +350,23 @@ func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
 	userRoutes := e.Group("user")
 	userRoutes.Use(middleware.CheckTokenUser)
 	userRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
+}
+
+func RegisterAdvertiseGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoAdvertise.NewAdvertiseRepository(db)
+
+	svc := serviceAdvertise.NewServiceAdvertise(repo, conf)
+
+	controller := handlerAdvertise.EchoControllerAdvertise{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin")
+	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.POST("/advertise", controller.CreateAdvertiseController)
+	adminRoutes.GET("/advertise", controller.GetAdvertiseController)
+	adminRoutes.GET("/advertise/:id", controller.GetAdvertiseIDController)
+	adminRoutes.PUT("/advertise/:id", controller.UpdateAdvertiseController)
+	adminRoutes.DELETE("/advertise/:id", controller.DeleteAdvertiseController)
 }
