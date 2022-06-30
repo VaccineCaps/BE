@@ -42,7 +42,7 @@ import (
 	// Deklarasi Services
 	serviceBooking "BE/services/booking"
 	serviceCity "BE/services/cities"
-	serviceDetailBook "BE/services/detailBook"
+	serviceDetailBook "BE/services/detailbook"
 	serviceHospital "BE/services/hospitals"
 	serviceNews "BE/services/news"
 	serviceOP "BE/services/otherperson"
@@ -90,6 +90,8 @@ func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
 	controller := handlerRole.EchoControllerRole{
 		Svc: svc,
 	}
+
+	GET("/role", controller.GetAllRoleController)
 
 	adminRoutes := e.Group("admin")
 	adminRoutes.Use(middleware.CheckTokenAdmin)
