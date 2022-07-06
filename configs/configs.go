@@ -31,3 +31,12 @@ func GetOrDefault(envKey, defaultValue string) string {
 	}
 	return defaultValue
 }
+
+// type CORSConfig struct {
+// 	AllowOrigins []string{"*"},
+//   }
+  
+//  DefaultCORSConfig = CORSConfig{
+// 	AllowOrigins: []string{"*"},
+//   }
+  

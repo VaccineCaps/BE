@@ -3,7 +3,8 @@ package routes
 import (
 	config "BE/configs"
 	"BE/database"
-	"BE/helper/middleware"
+	m "BE/helper/middleware"
+	"github.com/labstack/echo/v4/middleware"
 
 	// Deklarasi Handler
 	handlerBooking "BE/handler/booking"
@@ -69,16 +70,26 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	controller := handlerUser.EchoControllerUser{
 		Svc: svc,
 	}
+	
+	// e.POST("/register", controller.RegisterHandler)
+	// e.POST("/login", controller.LoginHandler)
 
-	e.POST("/register", controller.RegisterHandler)
-	e.POST("/login", controller.LoginHandler)
-
-	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes := e.Group(
+		"admin",
+	)
+	adminRoutes.POST("/register", controller.RegisterHandler)
+	adminRoutes.POST("/login", controller.LoginHandler)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.GET("/users", controller.GetUsersController)
 	adminRoutes.GET("/users/:id", controller.GetUserController)
 	adminRoutes.POST("/users/:id", controller.UpdateUserController)
 	adminRoutes.DELETE("/users/:id", controller.DeleteUserController)
+
+	userRoutes := e.Group(
+		"user",
+	)
+	userRoutes.POST("/register", controller.RegisterHandler)
+	userRoutes.POST("/login", controller.LoginHandler)
 }
 
 func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
@@ -91,10 +102,8 @@ func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	GET("/role", controller.GetAllRoleController)
-
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/role", controller.CreateRoleController)
 	adminRoutes.GET("/role", controller.GetAllRoleController)
 	adminRoutes.GET("/role/:id", controller.GetRoleIDController)
@@ -112,7 +121,7 @@ func RegisterProvinceGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS() )
 	adminRoutes.POST("/province", controller.CreateProvinceController)
 	adminRoutes.GET("/province", controller.GetAllProvinceController)
 	adminRoutes.GET("/province/:id", controller.GetProvinceIDController)
@@ -130,7 +139,7 @@ func RegisterCityGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS() )
 	adminRoutes.POST("/cities", controller.CreateCityController)
 	adminRoutes.GET("/cities", controller.GetAllCityController)
 	adminRoutes.GET("/cities/:id", controller.GetCityIDController)
@@ -148,7 +157,7 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS() )
 	adminRoutes.POST("/hospitals", controller.CreateHospitalController)
 	adminRoutes.GET("/hospitals", controller.GetHospitalController)
 	adminRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
@@ -156,7 +165,7 @@ func RegisterHospitalGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/hospitals/:id", controller.DeleteHospitalController)
 
 	userRoutes := e.Group("user")
-	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.Use( m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/hospitals", controller.GetHospitalController)
 	userRoutes.GET("/hospitals/:id", controller.GetHospitalIDController)
 
@@ -172,8 +181,8 @@ func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes := e.Group("admin",  )
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/news", controller.CreateNewsController)
 	adminRoutes.GET("/news", controller.GetNewsController)
 	adminRoutes.GET("/news/:id", controller.GetNewsIDController)
@@ -191,16 +200,16 @@ func RegisterOPsGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes := e.Group("admin", middleware.CORS() )
+	adminRoutes.Use( m.CheckTokenAdmin)
 	adminRoutes.POST("/others", controller.CreateOtherController)
 	adminRoutes.GET("/others", controller.GetOtherController)
 	adminRoutes.GET("/others/:id", controller.GetOtherIDController)
 	adminRoutes.PUT("/others/:id", controller.UpdateOtherController)
 	adminRoutes.DELETE("/others/:id", controller.DeleteOtherController)
 
-	userRoutes := e.Group("user")
-	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes := e.Group("user", middleware.CORS())
+	userRoutes.Use( m.CheckTokenUser)
 	userRoutes.POST("/others", controller.CreateOtherController)
 	userRoutes.GET("/others", controller.GetOtherController)
 	userRoutes.GET("/others/:id", controller.GetOtherIDController)
@@ -216,8 +225,8 @@ func RegisterVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes := e.Group("admin",  middleware.CORS())
+	adminRoutes.Use( m.CheckTokenAdmin)
 
 	adminRoutes.POST("/vaccine", controller.CreateVaccineController)
 	adminRoutes.GET("/vaccine", controller.GetAllVaccineController)
@@ -236,8 +245,8 @@ func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes := e.Group("admin",  middleware.CORS())
+	adminRoutes.Use( m.CheckTokenAdmin)
 	adminRoutes.POST("/stok", controller.CreateStokHandler)
 	adminRoutes.GET("/stok/:hospital_id", controller.GetStokByHospitalController)
 	adminRoutes.GET("/stok/:hospital_id/:vaccine_id", controller.GetStokByHospitalVaccineIDController)
@@ -256,7 +265,7 @@ func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS() )
 	adminRoutes.POST("/session", controller.CreateSessionHandler)
 	adminRoutes.GET("/session/:hospital_id", controller.GetSessionByHospitalController)
 	adminRoutes.GET("/session/:hospital_id/:vaccine_id", controller.GetSessionByHospitalVaccineIDController)
@@ -275,7 +284,7 @@ func RegisterVaccineTransactionGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/transaction", controller.CreateTransactionHandler)
 	adminRoutes.GET("/transaction/:hospital_id", controller.GetTrnasactionByHospitalController)
 	adminRoutes.GET("/transaction/:hospital_id/:vaccine_id", controller.GetTransactionByHospitalVaccineIDController)
@@ -293,7 +302,7 @@ func RegisterVStatusGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	adminRoutes := e.Group("admin")
+	adminRoutes := e.Group("admin", middleware.CORS())
 	adminRoutes.POST("/vstatus", controller.CreateVStatusController)
 	adminRoutes.GET("/vstatus", controller.GetAllVStatusController)
 	adminRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
@@ -301,7 +310,7 @@ func RegisterVStatusGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/vstatus/:id", controller.DeleteVStatusIDController)
 
 	userRoutes := e.Group("user")
-	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.Use( m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/vstatus", controller.GetAllVStatusController)
 	userRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
 }
@@ -317,7 +326,7 @@ func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/booking", controller.CreateBookingHandler)
 	adminRoutes.GET("/booking", controller.GetAllBookingController)
 	adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
@@ -325,7 +334,7 @@ func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/booking/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
 
 	userRoutes := e.Group("user")
-	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.Use( m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
 
 }
@@ -341,7 +350,7 @@ func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/detail", controller.CreateBookingDetailHandler)
 	adminRoutes.GET("/detail", controller.GetAllBookingDetailController)
 	adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
@@ -350,7 +359,7 @@ func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
 
 	userRoutes := e.Group("user")
-	userRoutes.Use(middleware.CheckTokenUser)
+	userRoutes.Use( m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
 }
 
@@ -365,7 +374,7 @@ func RegisterAdvertiseGroupAPI(e *echo.Echo, conf config.Config) {
 	}
 
 	adminRoutes := e.Group("admin")
-	adminRoutes.Use(middleware.CheckTokenAdmin)
+	adminRoutes.Use( m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/advertise", controller.CreateAdvertiseController)
 	adminRoutes.GET("/advertise", controller.GetAdvertiseController)
 	adminRoutes.GET("/advertise/:id", controller.GetAdvertiseIDController)
