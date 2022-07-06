@@ -48,3 +48,14 @@ func APIKEYMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		return nil
 	}
 }
+
+// type CORSConfig struct {
+// 	AllowOrigins []string{"*"}
+// 	AllowHeaders []string{}
+// }
+
+// DefaultCORSConfig = CORSConfig{
+// 	AllowOrigins: []string{"*"},
+// 	AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+// }
+  

@@ -5,10 +5,13 @@ import (
 	"BE/routes"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	
 )
 
 func Server() *echo.Echo {
 	app := echo.New()
+	app.Use(middleware.CORS())
 	conf := config.InitConfiguration()
 
 	routes.RegisterUserGroupAPI(app, conf)

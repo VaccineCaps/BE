@@ -33,6 +33,16 @@ func GetOrDefault(envKey, defaultValue string) string {
 }
 
 // type CORSConfig struct {
+// 	AllowOrigins []string{"*"}
+// 	AllowHeaders []string{}
+// }
+
+// DefaultCORSConfig = CORSConfig{
+// 	AllowOrigins: []string{"*"},
+// 	AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+// }
+
+// type CORSConfig struct {
 // 	AllowOrigins []string{"*"},
 //   }
   
