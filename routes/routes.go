@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 
 	// Deklarasi Handler
+	handlerAdvertise "BE/handler/advertise"
 	handlerBooking "BE/handler/booking"
 	handlerCities "BE/handler/cities"
 	handlerDetailBook "BE/handler/detailbook"
@@ -21,9 +22,9 @@ import (
 	handlerVStatus "BE/handler/vaccine_status"
 	handlerTransaction "BE/handler/vaccine_transaction"
 	handlerVaccineStok "BE/handler/vaccinehospital"
-	handlerAdvertise "BE/handler/advertise"
 
 	// Deklarasi repository
+	repoAdvertise "BE/repository/advertise"
 	repoBooking "BE/repository/booking"
 	repoCity "BE/repository/cities"
 	repoDetailBook "BE/repository/detailbook"
@@ -38,9 +39,9 @@ import (
 	repoVStatus "BE/repository/vaccine_status"
 	repoTransaction "BE/repository/vaccine_transaction"
 	repoStokVaccine "BE/repository/vaccinehospital"
-	repoAdvertise "BE/repository/advertise"
 
 	// Deklarasi Services
+	serviceAdvertise "BE/services/advertise"
 	serviceBooking "BE/services/booking"
 	serviceCity "BE/services/cities"
 	serviceDetailBook "BE/services/detailbook"
@@ -55,7 +56,6 @@ import (
 	serviceVStatus "BE/services/vaccine_status"
 	serviceTransaction "BE/services/vaccine_transaction"
 	serviceStokVaccine "BE/services/vaccinehospital"
-	serviceAdvertise "BE/services/advertise"
 
 	"github.com/labstack/echo/v4"
 )
