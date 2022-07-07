@@ -7,12 +7,20 @@ import (
 )
 
 type svcBooking struct {
-	c    config.Config
-	repo domain.AdapterRepositoryBooking
+	c           config.Config
+	repo        domain.AdapterRepositoryBooking
+	repoSession domain.AdapterRepositorySession
 }
 
 func (s *svcBooking) CreateBookingService(booking model.Booking) error {
-	return s.repo.CreateBooking(booking)
+	session := model.Session{}
+	session, err := s.repoSession.GetSessionByHospitalVaccine(booking.HospitalId, session.VaccineId)
+
+	if booking.SessionId >= session.MaxSession {
+		return err
+	} else {
+		return s.repo.CreateBooking(booking)
+	}
 }
 
 func (s *svcBooking) GetAllBookingService() []model.Booking {
@@ -27,7 +35,7 @@ func (s *svcBooking) GetAllBookingBySessionsService(session_id int) (booking []m
 	return s.repo.GetAllBookingBySessions(session_id)
 }
 
-func (s *svcBooking) GetBookingsByIDService(id int) (booking model.Booking, err error)  {
+func (s *svcBooking) GetBookingsByIDService(id int) (booking model.Booking, err error) {
 	return s.repo.GetBookingsByID(id)
 }
 
@@ -35,9 +43,10 @@ func (s *svcBooking) DeleteBookingByIDService(user_id, hospital_id, session_id, 
 	return s.repo.DeleteBookingByID(user_id, hospital_id, session_id, vaccinestatus_id)
 }
 
-func NewServiceBooking(repo domain.AdapterRepositoryBooking, c config.Config) domain.AdapterServiceBooking {
+func NewServiceBooking(repo domain.AdapterRepositoryBooking, repoSession domain.AdapterRepositorySession, c config.Config) domain.AdapterServiceBooking {
 	return &svcBooking{
-		repo: repo,
-		c:    c,
+		repo:        repo,
+		repoSession: repoSession,
+		c:           c,
 	}
 }

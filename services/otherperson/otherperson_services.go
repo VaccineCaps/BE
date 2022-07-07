@@ -4,6 +4,7 @@ import (
 	config "BE/configs"
 	"BE/domain"
 	"BE/model"
+	"time"
 )
 
 type svcOtherPerson struct {
@@ -12,6 +13,8 @@ type svcOtherPerson struct {
 }
 
 func (s *svcOtherPerson) CreateOtherService(OtherPerson model.OtherPerson) error {
+	var value string
+	OtherPerson.Dateofbirth, _ = time.Parse(time.RFC3339, value)
 	return s.repo.CreateOtherPerson(OtherPerson)
 }
 

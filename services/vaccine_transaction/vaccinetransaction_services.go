@@ -15,6 +15,7 @@ type svcVaccine struct {
 
 func (s *svcVaccine) CreateVaccinesTransactionService(transaction model.VaccineTransactions) error {
 	transaction.Tanggal = time.Now()
+
 	return s.repo.CreateVaccinesTransaction(transaction)
 }
 
