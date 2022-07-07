@@ -20,7 +20,7 @@ import (
 	handlerSession "BE/handler/session"
 	handlerUser "BE/handler/user"
 	handlerVaccine "BE/handler/vaccine"
-	handlerVStatus "BE/handler/vaccine_status"
+	handlerCertificate "BE/handler/certificate"
 	handlerTransaction "BE/handler/vaccine_transaction"
 	handlerVaccineStok "BE/handler/vaccinehospital"
 
@@ -37,7 +37,7 @@ import (
 	repoSession "BE/repository/session"
 	repoUser "BE/repository/user"
 	repoVaccine "BE/repository/vaccine"
-	repoVStatus "BE/repository/vaccine_status"
+	repoCertificate "BE/repository/certificate"
 	repoTransaction "BE/repository/vaccine_transaction"
 	repoStokVaccine "BE/repository/vaccinehospital"
 
@@ -54,7 +54,7 @@ import (
 	serviceSession "BE/services/session"
 	serviceUser "BE/services/user"
 	serviceVaccine "BE/services/vaccine"
-	serviceVStatus "BE/services/vaccine_status"
+	serviceCertificate "BE/services/certificate"
 	serviceTransaction "BE/services/vaccine_transaction"
 	serviceStokVaccine "BE/services/vaccinehospital"
 
@@ -293,27 +293,27 @@ func RegisterVaccineTransactionGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/transaction/:hospital_id/:vaccine_id", controller.DeleteVaccineTransactionIDController)
 }
 
-func RegisterVStatusGroupAPI(e *echo.Echo, conf config.Config) {
+func RegisterCertificateGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
-	repo := repoVStatus.NewVStatusRepository(db)
+	repo := repoCertificate.NewCertificateRepository(db)
 
-	svc := serviceVStatus.NewServiceVStatus(repo, conf)
+	svc := serviceCertificate.NewServiceCertificate(repo, conf)
 
-	controller := handlerVStatus.EchoControllerVStatus{
+	controller := handlerCertificate.EchoControllerCertificate{
 		Svc: svc,
 	}
 
 	adminRoutes := e.Group("admin", middleware.CORS())
-	adminRoutes.POST("/vstatus", controller.CreateVStatusController)
-	adminRoutes.GET("/vstatus", controller.GetAllVStatusController)
-	adminRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
-	adminRoutes.PUT("/vstatus/:id", controller.UpdateVStatusController)
-	adminRoutes.DELETE("/vstatus/:id", controller.DeleteVStatusIDController)
+	adminRoutes.POST("/certificate", controller.CreateCertificateController)
+	adminRoutes.GET("/certificate", controller.GetAllCertificateController)
+	adminRoutes.GET("/certificate/:id", controller.GetCertificateIDController)
+	adminRoutes.PUT("/certificate/:id", controller.UpdateCertificateController)
+	adminRoutes.DELETE("/certificate/:id", controller.DeleteCertificateIDController)
 
 	userRoutes := e.Group("user")
 	userRoutes.Use(m.CheckTokenUser, middleware.CORS())
-	userRoutes.GET("/vstatus", controller.GetAllVStatusController)
-	userRoutes.GET("/vstatus/:id", controller.GetVStatusIDController)
+	userRoutes.GET("/certificate", controller.GetAllCertificateController)
+	userRoutes.GET("/certificate/:id", controller.GetCertificateIDController)
 }
 
 func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {

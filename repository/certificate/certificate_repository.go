@@ -13,7 +13,7 @@ type repository struct {
 	DB *gorm.DB
 }
 
-func (r *repository) CreateVStatus(vStatus model.VaccineStatus) error {
+func (r *repository) CreateCertificate(vStatus model.Certificate) error {
 	res := r.DB.Create(&vStatus)
 	if res.RowsAffected < 1 {
 		return fmt.Errorf("error insert")
@@ -22,14 +22,14 @@ func (r *repository) CreateVStatus(vStatus model.VaccineStatus) error {
 	return nil
 }
 
-func (r *repository) GetAllVStatus() []model.VaccineStatus {
-	allVStatus := []model.VaccineStatus{}
-	r.DB.Find(&allVStatus)
+func (r *repository) GetAllCertificate() []model.Certificate {
+	allCertificate := []model.Certificate{}
+	r.DB.Find(&allCertificate)
 
-	return allVStatus
+	return allCertificate
 }
 
-func (r *repository) GetVStatusByID(id int) (vStatus model.VaccineStatus, err error) {
+func (r *repository) GetCertificateByID(id int) (vStatus model.Certificate, err error) {
 	res := r.DB.Where("id = ?", id).Find(&vStatus)
 	if res.RowsAffected < 1 {
 		err = fmt.Errorf("not found")
@@ -38,7 +38,7 @@ func (r *repository) GetVStatusByID(id int) (vStatus model.VaccineStatus, err er
 	return
 }
 
-func (r *repository) UpdateVStatusByID(id int, vStatus model.VaccineStatus) error {
+func (r *repository) UpdateCertificateByID(id int, vStatus model.Certificate) error {
 	res := r.DB.Where("id = ?", id).UpdateColumns(&vStatus)
 	if res.RowsAffected < 1 {
 		return fmt.Errorf("error update")
@@ -48,8 +48,8 @@ func (r *repository) UpdateVStatusByID(id int, vStatus model.VaccineStatus) erro
 }
 
 
-func (r *repository) DeleteVStatusByID(id int) error {
-	res := r.DB.Delete(&model.VaccineStatus{
+func (r *repository) DeleteCertificateByID(id int) error {
+	res := r.DB.Delete(&model.Certificate{
 		ID: id,
 	})
 	if res.RowsAffected < 1 {
@@ -59,7 +59,7 @@ func (r *repository) DeleteVStatusByID(id int) error {
 	return nil
 }
 
-func NewVStatusRepository(db *gorm.DB) domain.AdapterRepositoryVStatus {
+func NewCertificateRepository(db *gorm.DB) domain.AdapterRepositoryCertificate {
 	return &repository{
 		DB: db,
 	}

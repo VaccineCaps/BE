@@ -56,12 +56,12 @@ func (r *repository) GetBookingsByID(id int) (booking model.Booking, err error) 
 	return
 }
 
-func (r *repository) DeleteBookingByID(user_id, hospital_id, session_id, vaccinestatus_id int) error {
+func (r *repository) DeleteBookingByID(user_id, hospital_id, session_id, certificate_id int) error {
 	res := r.DB.Delete(&model.Booking{
 		UserId: user_id,
 		HospitalId: hospital_id,
 		SessionId: session_id,
-		VaccineStatusId:vaccinestatus_id,
+		CertificateId:certificate_id,
 	})
 	if res.RowsAffected < 1 {
 		return fmt.Errorf("error delete")
