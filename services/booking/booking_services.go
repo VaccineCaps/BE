@@ -16,9 +16,11 @@ func (s *svcBooking) CreateBookingService(booking model.Booking) error {
 	session := model.Session{}
 	session, err := s.repoSession.GetSessionByHospitalVaccine(booking.HospitalId, session.VaccineId)
 
-	if booking.SessionId >= session.MaxSession {
+	if session.NumberBooking >= session.MaxSession {
 		return err
 	} else {
+		session.NumberBooking = session.NumberBooking + 1
+		session.MaxSession = session.MaxSession - 1
 		return s.repo.CreateBooking(booking)
 	}
 }
