@@ -34,7 +34,7 @@ func (r *repository) Login(email, password string) (credential model.User, err e
 		return credential, fmt.Errorf("invalid credentials")
 	}
 
-	response := r.DB.Raw("SELECT * FROM users WHERE email = ?", email).Scan(&credential)
+	response := r.DB.Raw("SELECT * FROM users WHERE email = ? AND password = ?", email, hashedPassword).Scan(&credential)
 
 	if response.RowsAffected < 1 {
 		return credential, fmt.Errorf("email or password is incorrect")
