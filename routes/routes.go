@@ -72,22 +72,24 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 		Svc: svc,
 	}
 
-	// e.POST("/register", controller.RegisterHandler)
-	// e.POST("/login", controller.LoginHandler)
+	e.POST("admin/register", controller.RegisterHandler)
+	e.POST("admin/login", controller.LoginHandler)
+
+	e.POST("user/register", controller.RegisterHandler)
+	e.POST("user/login", controller.LoginHandler)
+
 
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
-	adminRoutes.POST("/register", controller.RegisterHandler)
-	adminRoutes.POST("/login", controller.LoginHandler)
+	// adminRoutes.POST("/register", controller.RegisterHandler)
+	// adminRoutes.POST("/login", controller.LoginHandler)
 	adminRoutes.GET("/users", controller.GetUsersController)
 	adminRoutes.GET("/users/:id", controller.GetUserController)
 	adminRoutes.POST("/users/:id", controller.UpdateUserController)
 	adminRoutes.DELETE("/users/:id", controller.DeleteUserController)
 
-	userRoutes := e.Group(
-		"user",
-	)
-	userRoutes.POST("/register", controller.RegisterHandler)
-	userRoutes.POST("/login", controller.LoginHandler)
+	// userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
+	// userRoutes.POST("/register", controller.RegisterHandler)
+	// userRoutes.POST("/login", controller.LoginHandler)
 }
 
 func RegisterRoleGroupAPI(e *echo.Echo, conf config.Config) {
