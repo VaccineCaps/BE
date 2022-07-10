@@ -10,15 +10,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type EchoControllerVStatus struct {
-	Svc domain.AdapterServiceVStatus
+type EchoControllerCertificate struct {
+	Svc domain.AdapterServiceCertificate
 }
 
-func (ce *EchoControllerVStatus) CreateVStatusController(c echo.Context) error {
-	vStatus := model.VaccineStatus{}
+func (ce *EchoControllerCertificate) CreateCertificateController(c echo.Context) error {
+	vStatus := model.Certificate{}
 	c.Bind(&vStatus)
 
-	err := ce.Svc.CreateVStatusService(vStatus)
+	err := ce.Svc.CreateCertificateService(vStatus)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"messages": err.Error(),
@@ -31,7 +31,7 @@ func (ce *EchoControllerVStatus) CreateVStatusController(c echo.Context) error {
 	})
 }
 
-func (ce *EchoControllerVStatus) GetVStatusIDController(c echo.Context) error {
+func (ce *EchoControllerCertificate) GetCertificateIDController(c echo.Context) error {
 	id := c.Param("id")
 	intID, err := strconv.Atoi(id)
 	if err != nil {
@@ -41,7 +41,7 @@ func (ce *EchoControllerVStatus) GetVStatusIDController(c echo.Context) error {
 		})
 	}
 
-	res, err := ce.Svc.GetVStatusByID(intID)
+	res, err := ce.Svc.GetCertificateByID(intID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
@@ -54,8 +54,8 @@ func (ce *EchoControllerVStatus) GetVStatusIDController(c echo.Context) error {
 	})
 }
 
-func (ce *EchoControllerVStatus) GetAllVStatusController(c echo.Context) error {
-	vStatus := ce.Svc.GetAllVStatusService()
+func (ce *EchoControllerCertificate) GetAllCertificateController(c echo.Context) error {
+	vStatus := ce.Svc.GetAllCertificateService()
 
 	return c.JSONPretty(http.StatusOK, map[string]interface{}{
 		"messages": "success",
@@ -63,14 +63,14 @@ func (ce *EchoControllerVStatus) GetAllVStatusController(c echo.Context) error {
 	}, "  ")
 }
 
-func (ce *EchoControllerVStatus) UpdateVStatusController(c echo.Context) error {
+func (ce *EchoControllerCertificate) UpdateCertificateController(c echo.Context) error {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
 
-	vStatus := model.VaccineStatus{}
+	vStatus := model.Certificate{}
 	c.Bind(&vStatus)
 
-	err := ce.Svc.UpdateVStatusService(intID, vStatus)
+	err := ce.Svc.UpdateCertificateService(intID, vStatus)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no change",
@@ -82,11 +82,11 @@ func (ce *EchoControllerVStatus) UpdateVStatusController(c echo.Context) error {
 	})
 }
 
-func (ce *EchoControllerVStatus) DeleteVStatusIDController(c echo.Context) error {
+func (ce *EchoControllerCertificate) DeleteCertificateIDController(c echo.Context) error {
 	id := c.Param("id")
 	intID, _ := strconv.Atoi(id)
 
-	err := ce.Svc.DeleteVStatusByID(intID)
+	err := ce.Svc.DeleteCertificateByID(intID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
