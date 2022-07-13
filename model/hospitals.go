@@ -5,9 +5,9 @@ type Hospitals struct {
 	Name 			string 		`json:"name"`
 	Address 		string 		`json:"address"`
 	UserId			int 		`gorm:"not null" json:"user_id"`
-	ProvincesId   	int    		`gorm:"not null" json:"province_id"`
+	CitiesId   		int    		`gorm:"not null" json:"cities_id"`
 	User     		User	 	`gorm:"ForeignKey:UserId;references:ID;null" json:"-"`
-	Province     	Provinces   `gorm:"ForeignKey:ProvincesId;references:ID;null" json:"-"`
+	Cities	     	Cities 		`gorm:"ForeignKey:CitiesId;references:ID;null" json:"-"`
 }
 
 func (*Hospitals) TableName() string {
