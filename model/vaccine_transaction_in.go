@@ -9,7 +9,7 @@ type VaccineTransactionsIn struct {
 	VaccineHospitalId int              `gorm:"not null" json:"vaccinehospital_id"`
 	VaccineHospital   VaccineHospitals `gorm:"ForeignKey:VaccineHospitalId;references:ID;null" json:"-"`
 	AsalVaccine       string           `json:"asalvaccine"`
-	Status            bool             `json:"status"`
+	Status            bool             `gorm:"default: false" json:"status"`
 	Tanggal           time.Time        `json:"tanggal"`
 	NoTransaction     int              `json:"no_transaction"`
 	Distributor       string           `json:"distributor"`

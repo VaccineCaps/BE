@@ -26,19 +26,18 @@ func (r *repository) CreateUsers(user model.User) error {
 }
 
 func (r *repository) Login(email, password string) (credential model.User, err error) {
-	var hashedPassword string
-	_ = r.DB.Raw("SELECT password FROM users WHERE email = ?", email).Scan(&hashedPassword)
-
-	match := repo.CheckPasswordHash(password, hashedPassword)
-	if !match {
-		return credential, fmt.Errorf("invalid credentials")
-	}
-
-	response := r.DB.Raw("SELECT * FROM users WHERE email = ? AND password = ?", email, hashedPassword).Scan(&credential)
+	response := r.DB.Raw("SELECT * FROM users WHERE email = ? LIMIT 1", email).Scan(&credential)
 
 	if response.RowsAffected < 1 {
 		return credential, fmt.Errorf("email or password is incorrect")
 	}
+
+	match := repo.CheckPasswordHash(password, credential.Password)
+	if !match {
+		return credential, fmt.Errorf("invalid credentials")
+	}
+
+	// response := r.DB.Raw("SELECT * FROM users WHERE email = ? AND password = ?", email, hashedPassword)
 
 	return credential, nil
 }

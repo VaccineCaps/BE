@@ -2,7 +2,7 @@ package model
 
 type User struct {
 	ID       int    `json:"id" gorm:"PrimaryKey;AUTO_INCREMENT;column:id"`
-	Name     string `json:"name" validate:"required"`
+	Username string `json:"Username" validate:"required"`
 	Email    string `json:"email" validate:"required"`
 	Password string `json:"-" validate:"required"`
 	Image    string `json:"image"`
