@@ -10,6 +10,7 @@ import (
 	// Deklarasi Handler
 	handlerAdvertise "BE/handler/advertise"
 	handlerBooking "BE/handler/booking"
+	handlerCertificate "BE/handler/certificate"
 	handlerCities "BE/handler/cities"
 	handlerDetailBook "BE/handler/detailbook"
 	handlerHospital "BE/handler/hospital"
@@ -20,13 +21,14 @@ import (
 	handlerSession "BE/handler/session"
 	handlerUser "BE/handler/user"
 	handlerVaccine "BE/handler/vaccine"
-	handlerCertificate "BE/handler/certificate"
-	handlerTransaction "BE/handler/vaccine_transaction"
+	handlerTransactionIn "BE/handler/vaccine_transaction_in"
+	handlerTransactionOut "BE/handler/vaccine_transaction_out"
 	handlerVaccineStok "BE/handler/vaccinehospital"
 
 	// Deklarasi repository
 	repoAdvertise "BE/repository/advertise"
 	repoBooking "BE/repository/booking"
+	repoCertificate "BE/repository/certificate"
 	repoCity "BE/repository/cities"
 	repoDetailBook "BE/repository/detailbook"
 	repoHospital "BE/repository/hospital"
@@ -37,13 +39,14 @@ import (
 	repoSession "BE/repository/session"
 	repoUser "BE/repository/user"
 	repoVaccine "BE/repository/vaccine"
-	repoCertificate "BE/repository/certificate"
-	repoTransaction "BE/repository/vaccine_transaction"
+	repoTransactionIn "BE/repository/vaccine_transaction_in"
+	repoTransactionOut "BE/repository/vaccine_transaction_out"
 	repoStokVaccine "BE/repository/vaccinehospital"
 
 	// Deklarasi Services
 	serviceAdvertise "BE/services/advertise"
 	serviceBooking "BE/services/booking"
+	serviceCertificate "BE/services/certificate"
 	serviceCity "BE/services/cities"
 	serviceDetailBook "BE/services/detailbook"
 	serviceHospital "BE/services/hospitals"
@@ -54,8 +57,8 @@ import (
 	serviceSession "BE/services/session"
 	serviceUser "BE/services/user"
 	serviceVaccine "BE/services/vaccine"
-	serviceCertificate "BE/services/certificate"
-	serviceTransaction "BE/services/vaccine_transaction"
+	serviceTransactionIn "BE/services/vaccine_transaction_in"
+	serviceTransactionOut "BE/services/vaccine_transaction_out"
 	serviceStokVaccine "BE/services/vaccinehospital"
 
 	"github.com/labstack/echo/v4"
@@ -77,7 +80,6 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 
 	e.POST("user/register", controller.RegisterHandler)
 	e.POST("user/login", controller.LoginHandler)
-
 
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
 	// adminRoutes.POST("/register", controller.RegisterHandler)
@@ -262,22 +264,40 @@ func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.DELETE("/session/:hospital_id/:vaccine_id", controller.DeleteSessionIDController)
 }
 
-func RegisterVaccineTransactionGroupAPI(e *echo.Echo, conf config.Config) {
+func RegisterVaccineTransactionInGroupAPI(e *echo.Echo, conf config.Config) {
 	db := database.InitDB(conf)
-	repo := repoTransaction.NewVaccineTransactionRepository(db)
+	repo := repoTransactionIn.NewVaccineTransactionRepository(db)
 
-	svc := serviceTransaction.NewServiceVaccineTransactions(repo, conf)
+	svc := serviceTransactionIn.NewServiceVaccineTransactionsIn(repo, conf)
 
-	controller := handlerTransaction.EchoControllerVaccineTransaction{
+	controller := handlerTransactionIn.EchoControllerVaccineTransaction{
 		Svc: svc,
 	}
 
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
-	adminRoutes.POST("/transaction", controller.CreateTransactionHandler)
-	adminRoutes.GET("/transaction/:hospital_id", controller.GetTrnasactionByHospitalController)
-	adminRoutes.GET("/transaction/:hospital_id/:vaccine_id", controller.GetTransactionByHospitalVaccineIDController)
-	adminRoutes.POST("/transaction/:hospital_id/:vaccine_id", controller.UpdateVaccineTransactionController)
-	adminRoutes.DELETE("/transaction/:hospital_id/:vaccine_id", controller.DeleteVaccineTransactionIDController)
+	adminRoutes.POST("/transactionin", controller.CreateTransactionHandler)
+	adminRoutes.GET("/transactionin/:id", controller.GetTransactionByIDController)
+	adminRoutes.GET("/transactionin", controller.GetAllTransactionInController)
+	adminRoutes.POST("/transactionin/:id", controller.UpdateVaccineTransactionController)
+	adminRoutes.DELETE("/transactionin/:id", controller.DeleteVaccineTransactionIDController)
+}
+
+func RegisterVaccineTransactionOutGroupAPI(e *echo.Echo, conf config.Config) {
+	db := database.InitDB(conf)
+	repo := repoTransactionOut.NewVaccineTransactionRepository(db)
+
+	svc := serviceTransactionOut.NewServiceVaccineTransactionsOut(repo, conf)
+
+	controller := handlerTransactionOut.EchoControllerVaccineTransaction{
+		Svc: svc,
+	}
+
+	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
+	adminRoutes.POST("/transactionout", controller.CreateTransactionHandler)
+	adminRoutes.GET("/transactionout/:id", controller.GetTransactionByIDController)
+	adminRoutes.GET("/transactionout", controller.GetAllTransactionInController)
+	adminRoutes.POST("/transactionout/:id", controller.UpdateVaccineTransactionController)
+	adminRoutes.DELETE("/transactionout/:id", controller.DeleteVaccineTransactionIDController)
 }
 
 func RegisterCertificateGroupAPI(e *echo.Echo, conf config.Config) {
