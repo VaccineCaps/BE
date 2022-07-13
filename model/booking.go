@@ -8,10 +8,12 @@ type Booking struct {
 	Hospital        Hospitals     `gorm:"ForeignKey:HospitalId;references:ID;null" json:"-"`
 	SessionId       int           `gorm:"not null" json:"session_id"`
 	Session         Session       `gorm:"ForeignKey:SessionId;references:ID;null" json:"-"`
-	VaccineStatusId int           `gorm:"not null" json:"vaccinestatus_id"`
-	VaccineStatus   VaccineStatus `gorm:"ForeignKey:SessionId;references:ID;null" json:"-"`
+	CertificateId 	int           `gorm:"not null" json:"certificate_id"`
+	Certificate   	Certificate   `gorm:"ForeignKey:CertificateId;references:ID;null" json:"-"`
 	BookedCode      string        `json:"bookedcode"`
-	Status          string        `json:"status"`
+	StatusBook      bool	      `json:"statusbook"`
+	VaccineNumber	int			  `json:"vaccinenumber"`
+	StatusNumber	bool		  `json:"statusnumber"`
 }
 
 func (*Booking) TableName() string {

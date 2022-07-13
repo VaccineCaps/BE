@@ -108,12 +108,12 @@ type AdapterRepositorySession interface {
 	DeleteSessionByID(hospital_id, vaccine_id int) error
 }
 
-type AdapterRepositoryVStatus interface {
-	CreateVStatus(vStatus model.VaccineStatus) error
-	GetAllVStatus() []model.VaccineStatus
-	GetVStatusByID(id int) (vStatus model.VaccineStatus, err error)
-	UpdateVStatusByID(id int, vStatus model.VaccineStatus) error
-	DeleteVStatusByID(id int) error
+type AdapterRepositoryCertificate interface {
+	CreateCertificate(vStatus model.Certificate) error
+	GetAllCertificate() []model.Certificate
+	GetCertificateByID(id int) (vStatus model.Certificate, err error)
+	UpdateCertificateByID(id int, vStatus model.Certificate) error
+	DeleteCertificateByID(id int) error
 }
 
 type AdapterRepositoryBooking interface {
@@ -253,12 +253,12 @@ type AdapterServiceSession interface {
 	DeleteSessionByIDService(hospital_id, vaccine_id int) error
 }
 
-type AdapterServiceVStatus interface {
-	CreateVStatusService(vStatus model.VaccineStatus) error
-	GetAllVStatusService() []model.VaccineStatus
-	GetVStatusByID(id int) (model.VaccineStatus, error)
-	UpdateVStatusService(id int, vStatus model.VaccineStatus) error
-	DeleteVStatusByID(id int) error
+type AdapterServiceCertificate interface {
+	CreateCertificateService(vStatus model.Certificate) error
+	GetAllCertificateService() []model.Certificate
+	GetCertificateByID(id int) (model.Certificate, error)
+	UpdateCertificateService(id int, vStatus model.Certificate) error
+	DeleteCertificateByID(id int) error
 }
 
 type AdapterServiceBooking interface {

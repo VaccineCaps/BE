@@ -102,7 +102,7 @@ func (ce *EchoControllerBooking) DeleteBookingController(c echo.Context) error {
 	book := model.Booking{}
 	c.Bind(&book)
 
-	err := ce.Svc.DeleteBookingByIDService(book.UserId, book.HospitalId, book.SessionId, book.VaccineStatusId)
+	err := ce.Svc.DeleteBookingByIDService(book.UserId, book.HospitalId, book.SessionId, book.CertificateId)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
