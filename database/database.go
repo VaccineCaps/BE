@@ -30,9 +30,9 @@ func InitDB(conf config.Config) *gorm.DB {
 		fmt.Println("error open conection : ", err)
 	}
 
-	DB.AutoMigrate(&model.Role{}, &model.User{}, &model.Provinces{}, &model.Cities{}, &model.Hospitals{}, 
-		&model.News{}, &model.OtherPerson{}, &model.Vaccines{}, &model.VaccineHospitals{}, &model.Session{}, 
-		&model.Certificate{}, &model.Booking{}, &model.BookingDetail{}, &model.VaccineTransactions{}, 
+	DB.AutoMigrate(&model.Role{}, &model.User{}, &model.Provinces{}, &model.Cities{}, &model.Hospitals{},
+		&model.News{}, &model.OtherPerson{}, &model.Vaccines{}, &model.VaccineHospitals{}, &model.Session{},
+		&model.Certificate{}, &model.Booking{}, &model.BookingDetail{}, &model.VaccineTransactionsIn{},
 		&model.Advertise{})
 
 	return DB
