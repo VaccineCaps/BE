@@ -15,5 +15,5 @@ type VaccineTransactionsOut struct {
 }
 
 func (*VaccineTransactionsOut) TableName() string {
-	return "vaccine_transactions"
+	return "vaccine_transactions_out"
 }
