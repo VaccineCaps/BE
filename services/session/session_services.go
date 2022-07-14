@@ -14,7 +14,7 @@ type svcSession struct {
 
 func (s *svcSession) CreateSessionService(session model.Session) error {
 	var value string
-	session.Jadwal, _ = time.Parse(time.RFC3339, value)
+	session.Tanggal, _ = time.Parse(time.RFC3339, value)
 	return s.repo.CreateSession(session)
 }
 

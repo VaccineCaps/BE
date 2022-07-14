@@ -184,6 +184,11 @@ func RegisterNewsGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/news/:id", controller.GetNewsIDController)
 	adminRoutes.PUT("/news/:id", controller.UpdateNewsController)
 	adminRoutes.DELETE("/news/:id", controller.DeleteNewsController)
+
+	userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
+	userRoutes.GET("/news", controller.GetNewsController)
+	userRoutes.GET("/news/:id", controller.GetNewsIDController)
+
 }
 
 func RegisterOPsGroupAPI(e *echo.Echo, conf config.Config) {
@@ -383,4 +388,8 @@ func RegisterAdvertiseGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.GET("/advertise/:id", controller.GetAdvertiseIDController)
 	adminRoutes.PUT("/advertise/:id", controller.UpdateAdvertiseController)
 	adminRoutes.DELETE("/advertise/:id", controller.DeleteAdvertiseController)
+
+	userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
+	userRoutes.GET("/advertise", controller.GetAdvertiseController)
+	userRoutes.GET("/advertise/:id", controller.GetAdvertiseIDController)
 }

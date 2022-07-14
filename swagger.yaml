@@ -1,18 +1,19 @@
 openapi: 3.0.0
 info:
   description: |
-    "This is a Documentation Rest API for Vaccine Booking from capstone project Alterra Academy, Group 46"
-  version: "1.0.0"
+    "This is a Documentation Rest API for Vaccine Booking from capstone project Alterra Academy, Group 46. you can access it here. [http://13.57.43.205/](http://13.57.43.205/) or here [http://ec2-13-57-43-205.us-west-1.compute.amazonaws.com/](http://ec2-13-57-43-205.us-west-1.compute.amazonaws.com/)"
+  version: "2.0.0"
   title: VaccineCaps
   termsOfService: 'http://swagger.io/terms/'
   contact:
     email: azkazainur@gmail.com
-    
-# servers:
-  # Added by API Auto Mocking Plugin
-  # - description: SwaggerHub API Auto Mocking
-    # url: https://virtserver.swaggerhub.com/Azifaazka/VaccineCaps/1.0.0
-    # note : ganti pake rest api yang udah deploy
+
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Azifaazka/VaccineCaps/2.0.0
+  - description: BaseURL
+    url: http://13.57.43.205/
+  
 tags:
   - name: user
     description: Operations about User
@@ -32,8 +33,10 @@ tags:
     description: Operations about Vaccines
   - name: Stok
     description: Operations about Vaccines_Hospital
-  - name: Vaccines_Transaction
-    description: Operations about Vaccines_Transaction
+  - name: VaccineTransactionIn
+    description: Operations about VaccineTransactionIn
+  - name: VaccineTransactionOut
+    description: Operations about VaccineTransactionOut
   - name: Certificate
     description: Operations about Certificate
   - name: Sessions
@@ -42,14 +45,16 @@ tags:
     description: Operations about Otherperson
   - name: Bookings
     description: Operations about Bookings
+  - name: DetailBooking
+    description: Operations about DetailBooking
     
 paths:
-  /login:
+  /admin/login:
     post:
       tags:
         - user
       summary: Logs user into the system
-      operationId: Login
+      operationId: LoginAdmin
       parameters:
         - name: email
           in: query
@@ -86,14 +91,13 @@ paths:
                 type: string
         '400':
           description: Invalid email/password supplied
-
-  /register:
+  /admin/register:
     post:
       tags:
         - user
       summary: Create user
       description: This can only be done by the logged in user.
-      operationId: createUser
+      operationId: RegisterAdmin
       responses:
         default:
           description: successful operation
@@ -104,16 +108,16 @@ paths:
               $ref: '#/components/schemas/User'
         description: Created user object
         required: true
-  /logout:
-    post:
-      tags:
-        - user
-      summary: Logs out current logged in user session
-      operationId: logoutUser
-      responses:
-        default:
-          description: successful operation
-  /user:
+  # /logout:
+  #   post:
+  #     tags:
+  #       - user
+  #     summary: Logs out current logged in user session
+  #     operationId: logoutUser
+  #     responses:
+  #       default:
+  #         description: successful operation
+  /admin/user:
     get:
       tags:
         - user
@@ -134,7 +138,7 @@ paths:
         '404':
           description: User not found
   
-  /user/{id}:
+  /admin/user/{id}:
     get:
       tags:
         - user
@@ -204,9 +208,67 @@ paths:
           description: Invalid id supplied
         '404':
           description: User not found
-    
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: LoginUser
+      parameters:
+        - name: email
+          in: query
+          description: The email for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        '400':
+          description: Invalid email/password supplied
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: RegisterUser
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Created user object
+        required: true
 
-  /role:
+  /admin/role:
     post:
       tags:
         - Role
@@ -244,7 +306,7 @@ paths:
           description: Role not found
   
         
-  /role/{id}:
+  /admin/role/{id}:
     get:
       tags:
         - Role
@@ -290,7 +352,7 @@ paths:
         '404':
           description: Role not found
   
-  /cities:
+  /admin/cities:
     post:
       tags:
         - Cities
@@ -328,7 +390,7 @@ paths:
           description: Cities not found
   
         
-  /cities/{id}:
+  /admin/cities/{id}:
     get:
       tags:
         - Cities
@@ -374,7 +436,7 @@ paths:
         '404':
           description: Cities not found
   
-  /provinces:
+  /admin/province:
     post:
       tags:
         - Provinces
@@ -411,7 +473,7 @@ paths:
         '404':
           description: Provinces not found
   
-  /Provinces/{id}:
+  /admin/province/{id}:
     get:
       tags:
         - Provinces
@@ -456,7 +518,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Provinces not found
-  /hospitals:
+  /admin/hospitals:
     post:
       tags:
         - Hospitals
@@ -492,7 +554,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Provinces not found
-  /hospitals/{id}:
+  /admin/hospitals/{id}:
     get:
       tags:
         - Hospitals
@@ -563,8 +625,55 @@ paths:
           description: Invalid id supplied
         '404':
           description: Hospitals not found
-  
-  /news:
+  /user/hospitals:
+    get:
+      tags:
+        - Hospitals
+      summary: Get all hospitals
+      operationId: getAllHospital
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /user/hospitals/{id}:
+    get:
+      tags:
+        - Hospitals
+      summary: Get Hospitals by id
+      operationId: getHospitalsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use hospital1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+    
+  /admin/news:
     post:
       tags:
         - News
@@ -600,7 +709,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Provinces not found
-  /news/{id}:
+  /admin/news/{id}:
     get:
       tags:
         - News
@@ -671,8 +780,55 @@ paths:
           description: Invalid id supplied
         '404':
           description: News not found 
+  /user/news:
+    get:
+      tags:
+        - News
+      summary: Get all news
+      operationId: getAllNewss
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /user/news/{id}:
+    get:
+      tags:
+        - News
+      summary: Get News by id
+      operationId: getNewssByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use news1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
 
-  /advertise:
+  /admin/advertise:
     post:
       tags:
         - Advertise
@@ -708,7 +864,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Advertise not found
-  /advertise/{id}:
+  /admin/advertise/{id}:
     get:
       tags:
         - Advertise
@@ -779,8 +935,56 @@ paths:
           description: Invalid id supplied
         '404':
           description: Advertise not found
+  /user/advertise:
+    get:
+      tags:
+        - Advertise
+      summary: Get all advertises
+      operationId: getAllAdvertise
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertise not found
+          
+  /user/advertise/{id}:
+    get:
+      tags:
+        - Advertise
+      summary: Get Advertises by id
+      operationId: getAdvertisesByID
+      parameters:
+        - name: id
+          in: path
+          description: Use advertise1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertises not found
   
-  /vaccine:
+  /admin/vaccine:
     post:
       tags:
         - Vaccines
@@ -816,7 +1020,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Vaccine not found
-  /vaccine/{id}:
+  /admin/vaccine/{id}:
     get:
       tags:
         - Vaccines
@@ -888,7 +1092,7 @@ paths:
         '404':
           description: Vaccine not found
     
-  /Stok:
+  /admin/stok:
     post:
       tags:
         - Stok
@@ -905,7 +1109,7 @@ paths:
               $ref: '#/components/schemas/Stok'
         description: Created Stok object
         required: true
-  /Stok/{id_hospitals}:
+  /admin/stok/{id_hospitals}:
     get:
       tags:
         - Stok
@@ -932,7 +1136,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Vaccines not found
-  /Stok/{id_hospitals}/{id_vaccines}:
+  /admin/stok/{id_hospitals}/{id_vaccines}:
     get:
       tags:
         - Stok
@@ -1021,10 +1225,11 @@ paths:
           description: Invalid id supplied
         '404':
           description: Vaccine not found
-  /transaction:
+          
+  /admin/transactionin:
     post:
       tags:
-        - Vaccines_Transaction
+        - VaccineTransactionIn
       summary: Create Transaction
       description: create Transaction
       operationId: CreateVaccinesTransaction
@@ -1035,82 +1240,62 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Vaccines_Transaction'
+              $ref: '#/components/schemas/VaccineTransactionIn'
         description: Created Transactions object
         required: true
-  /transaction/{id_hospitals}:
     get:
       tags:
-        - Vaccines_Transaction
-      summary: Get Transaction by id hospital
-      operationId: getTransactionByID
-      parameters:
-        - name: id_hospitals
-          in: path
-          description: Use transaction1 for testing.
-          required: true
-          schema:
-            type: string
+        - VaccineTransactionIn
+      summary: Get Transaction In
+      operationId: getTransaction
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vaccines_Transaction'
+                $ref: '#/components/schemas/VaccineTransactionIn'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Vaccines_Transaction'
+                $ref: '#/components/schemas/VaccineTransactionIn'
         '400':
           description: Invalid id supplied
         '404':
           description: Transaction not found
-  /transaction/{id_hospitals}/{id_vaccines}:
+  /admin/transactionin/{id}:
     get:
       tags:
-        - Vaccines_Transaction
-      summary: Get Transaction by id hospital and vaccines
+        - VaccineTransactionIn
+      summary: Get Transaction by id 
       operationId: getTransactionByHospitalVaccine
       parameters:
-        - name: id_hospitals
+        - name: id
           in: path
           description: Use Transaction1 for testing.
           required: true
           schema:
             type: string
-        - name: id_vaccines
-          in: path
-          description: Update
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vaccines_Transaction'
+                $ref: '#/components/schemas/VaccineTransactionIn'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Vaccines_Transaction'
+                $ref: '#/components/schemas/VaccineTransactionIn'
         '400':
           description: Invalid id supplied
         '404':
           description: Vaccines not found
     put:
       tags:
-        - Vaccines_Transaction
+        - VaccineTransactionIn
       summary: Update transaction
       operationId: Update transaction
       parameters:
-        - name: id_hospitals
-          in: path
-          description: Update
-          required: true
-          schema:
-            type: string
-        - name: id_vaccines
+        - name: id
           in: path
           description: Update
           required: true
@@ -1127,23 +1312,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Vaccines_Transaction'
+              $ref: '#/components/schemas/VaccineTransactionIn'
         description: Update Transaction object
         required: true
     delete:
       tags:
-        - Vaccines_Transaction
+        - VaccineTransactionIn
       summary: Delete Transaction
       description: This can only be done on Transaction.
       operationId: DeleteTransactionByID
       parameters:
-        - name: id_hospitals
-          in: path
-          description: Update
-          required: true
-          schema:
-            type: string
-        - name: id_vaccines
+        - name: id
           in: path
           description: Update
           required: true
@@ -1154,7 +1333,116 @@ paths:
           description: Invalid id supplied
         '404':
           description: Transaction not found
-  /certificate:
+  
+  /admin/transactionout:
+    post:
+      tags:
+        - VaccineTransactionOut
+      summary: Create Transaction
+      description: create Transaction
+      operationId: CreateVaccinesTransactionOut
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionOut'
+        description: Created Transactions object
+        required: true
+    get:
+      tags:
+        - VaccineTransactionOut
+      summary: Get Transaction Out
+      operationId: getTransactionOut
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  /admin/transactionout/{id}:
+    get:
+      tags:
+        - VaccineTransactionOut
+      summary: Get TransactionOut by id 
+      operationId: getTransactionOutByID
+      parameters:
+        - name: id
+          in: path
+          description: Use Transaction1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - VaccineTransactionOut
+      summary: Update transaction
+      operationId: Update transaction Out
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Transaction not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionOut'
+        description: Update Transaction object
+        required: true
+    delete:
+      tags:
+        - VaccineTransactionOut
+      summary: Delete Transaction
+      description: This can only be done on Transaction.
+      operationId: DeleteTransactionOutByID
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  
+  /admin/certificate:
     post:
       tags:
         - Certificate
@@ -1190,7 +1478,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: data not found
-  /certificate/{id}:
+  /admin/certificate/{id}:
     get:
       tags:
         - Certificate
@@ -1261,7 +1549,55 @@ paths:
           description: Invalid id supplied
         '404':
           description: Hospitals not found
-  /session:
+  /user/certificate:
+    get:
+      tags:
+        - Certificate
+      summary: Get all certificate
+      operationId: getAllCertificate
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /user/certificate/{id}:
+    get:
+      tags:
+        - Certificate
+      summary: Get by id
+      operationId: getCertificatesByID
+      parameters:
+        - name: id
+          in: path
+          description: Use certificate for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Certificates not found
+  
+  /admin/session:
     post:
       tags:
         - Sessions
@@ -1278,7 +1614,7 @@ paths:
               $ref: '#/components/schemas/Sessions'
         description: Created Sessions object
         required: true
-  /session/{id_hospitals}:
+  /admin/session/{id_hospitals}:
     get:
       tags:
         - Sessions
@@ -1305,7 +1641,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: session not found
-  /session/{id_hospitals}/{id_vaccines}:
+  /admin/session/{id_hospitals}/{id_vaccines}:
     get:
       tags:
         - Sessions
@@ -1394,7 +1730,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: Session not found
-  /others:
+  /admin/others:
     post:
       tags:
         - Otherperson
@@ -1430,7 +1766,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: data not found
-  /others/{id}:
+  /admin/others/{id}:
     get:
       tags:
         - Otherperson
@@ -1498,11 +1834,74 @@ paths:
             type: string
       responses:
         '400':
+          description: Invalid id suppliedf
+        '404':
+          description: otherbook not found
+  /user/others:
+    post:
+      tags:
+        - Otherperson
+      summary: Create otherbook
+      description: create otherbook
+      operationId: CreateOPs
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Otherperson'
+        description: Created otherbook object
+        required: true
+    get:
+      tags:
+        - Otherperson
+      summary: Get all otherbook
+      operationId: getAllOPs
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /user/others/{id}:
+    get:
+      tags:
+        - Otherperson
+      summary: Get by id
+      operationId: getOPsByID
+      parameters:
+        - name: id
+          in: path
+          description: Use otherbook for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
           description: Invalid id supplied
         '404':
           description: otherbook not found
           
-  /booking:
+  /admin/booking:
     post:
       tags:
         - Bookings
@@ -1538,10 +1937,10 @@ paths:
           description: Invalid id supplied
         '404':
           description: data not found
-  /booking/{id_user}:
+  /admin/booking/{id_user}:
     get:
       tags:
-        - Sessions
+        - Bookings
       summary: Get User by id user
       operationId: getBookingByIDUser
       parameters:
@@ -1565,7 +1964,7 @@ paths:
           description: Invalid id supplied
         '404':
           description: booking not found
-  /booking/{id_sessions}:
+  /admin/booking/{id_sessions}:
     get:
       tags:
         - Bookings
@@ -1593,7 +1992,7 @@ paths:
         '404':
           description: booking not found
           
-  /booking/{id_hospitals}/{id_user}/{id_sessions}/{id_vstatus}:
+  /admin/booking/{id_hospitals}/{id_user}/{id_sessions}/{id_vstatus}:
     delete:
       tags:
         - Bookings
@@ -1630,342 +2029,125 @@ paths:
           description: Invalid id supplied
         '404':
           description: Session not found
-    
-  # /pet:
-  #   post:
-  #     tags:
-  #       - pet
-  #     summary: Add a new pet to the store
-  #     operationId: addPet
-  #     responses:
-  #       '405':
-  #         description: Invalid input
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  #     requestBody:
-  #       $ref: '#/components/requestBodies/Pet'
-  #   put:
-  #     tags:
-  #       - pet
-  #     summary: Update an existing pet
-  #     operationId: updatePet
-  #     responses:
-  #       '400':
-  #         description: Invalid ID supplied
-  #       '404':
-  #         description: Pet not found
-  #       '405':
-  #         description: Validation exception
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  #     requestBody:
-  #       $ref: '#/components/requestBodies/Pet'
-  # /pet/findByStatus:
-  #   get:
-  #     tags:
-  #       - pet
-  #     summary: Finds Pets by status
-  #     description: Multiple status values can be provided with comma separated strings
-  #     operationId: findPetsByStatus
-  #     parameters:
-  #       - name: status
-  #         in: query
-  #         description: Status values that need to be considered for filter
-  #         required: true
-  #         explode: true
-  #         schema:
-  #           type: array
-  #           items:
-  #             type: string
-  #             enum:
-  #               - available
-  #               - pending
-  #               - sold
-  #             default: available
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: '#/components/schemas/Pet'
-  #           application/xml:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: '#/components/schemas/Pet'
-  #       '400':
-  #         description: Invalid status value
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  # /pet/findByTags:
-  #   get:
-  #     tags:
-  #       - pet
-  #     summary: Finds Pets by tags
-  #     description: >-
-  #       Muliple tags can be provided with comma separated strings. Use\ \ tag1,
-  #       tag2, tag3 for testing.
-  #     operationId: findPetsByTags
-  #     parameters:
-  #       - name: tags
-  #         in: query
-  #         description: Tags to filter by
-  #         required: true
-  #         explode: true
-  #         schema:
-  #           type: array
-  #           items:
-  #             type: string
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: '#/components/schemas/Pet'
-  #           application/xml:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 $ref: '#/components/schemas/Pet'
-  #       '400':
-  #         description: Invalid tag value
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  #     deprecated: true
-  # '/pet/{petId}':
-  #   get:
-  #     tags:
-  #       - pet
-  #     summary: Find pet by ID
-  #     description: Returns a single pet
-  #     operationId: getPetById
-  #     parameters:
-  #       - name: petId
-  #         in: path
-  #         description: ID of pet to return
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/Pet'
-  #           application/xml:
-  #             schema:
-  #               $ref: '#/components/schemas/Pet'
-  #       '400':
-  #         description: Invalid ID supplied
-  #       '404':
-  #         description: Pet not found
-  #     security:
-  #       - api_key: []
-  #   post:
-  #     tags:
-  #       - pet
-  #     summary: Updates a pet in the store with form data
-  #     operationId: updatePetWithForm
-  #     parameters:
-  #       - name: petId
-  #         in: path
-  #         description: ID of pet that needs to be updated
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #     responses:
-  #       '405':
-  #         description: Invalid input
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  #     requestBody:
-  #       content:
-  #         application/x-www-form-urlencoded:
-  #           schema:
-  #             type: object
-  #             properties:
-  #               name:
-  #                 description: Updated name of the pet
-  #                 type: string
-  #               status:
-  #                 description: Updated status of the pet
-  #                 type: string
-  #   delete:
-  #     tags:
-  #       - pet
-  #     summary: Deletes a pet
-  #     operationId: deletePet
-  #     parameters:
-  #       - name: api_key
-  #         in: header
-  #         required: false
-  #         schema:
-  #           type: string
-  #       - name: petId
-  #         in: path
-  #         description: Pet id to delete
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #     responses:
-  #       '400':
-  #         description: Invalid ID supplied
-  #       '404':
-  #         description: Pet not found
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  # '/pet/{petId}/uploadImage':
-  #   post:
-  #     tags:
-  #       - pet
-  #     summary: uploads an image
-  #     operationId: uploadFile
-  #     parameters:
-  #       - name: petId
-  #         in: path
-  #         description: ID of pet to update
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/ApiResponse'
-  #     security:
-  #       - petstore_auth:
-  #           - 'write:pets'
-  #           - 'read:pets'
-  #     requestBody:
-  #       content:
-  #         application/octet-stream:
-  #           schema:
-  #             type: string
-  #             format: binary
-  # /store/inventory:
-  #   get:
-  #     tags:
-  #       - store
-  #     summary: Returns pet inventories by status
-  #     description: Returns a map of status codes to quantities
-  #     operationId: getInventory
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #               additionalProperties:
-  #                 type: integer
-  #                 format: int32
-  #     security:
-  #       - api_key: []
-  # /store/order:
-  #   post:
-  #     tags:
-  #       - store
-  #     summary: Place an order for a pet
-  #     operationId: placeOrder
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/Order'
-  #           application/xml:
-  #             schema:
-  #               $ref: '#/components/schemas/Order'
-  #       '400':
-  #         description: Invalid Order
-  #     requestBody:
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/Order'
-  #       description: order placed for purchasing the pet
-  #       required: true
-  # '/store/order/{orderId}':
-  #   get:
-  #     tags:
-  #       - store
-  #     summary: Find purchase order by ID
-  #     description: >-
-  #       For valid response try integer IDs with value >= 1 and <= 10.\ \ Other
-  #       values will generated exceptions
-  #     operationId: getOrderById
-  #     parameters:
-  #       - name: orderId
-  #         in: path
-  #         description: ID of pet that needs to be fetched
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #           minimum: 1
-  #           maximum: 10
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/Order'
-  #           application/xml:
-  #             schema:
-  #               $ref: '#/components/schemas/Order'
-  #       '400':
-  #         description: Invalid ID supplied
-  #       '404':
-  #         description: Order not found
-  #   delete:
-  #     tags:
-  #       - store
-  #     summary: Delete purchase order by ID
-  #     description: >-
-  #       For valid response try integer IDs with positive integer value.\ \
-  #       Negative or non-integer values will generate API errors
-  #     operationId: deleteOrder
-  #     parameters:
-  #       - name: orderId
-  #         in: path
-  #         description: ID of the order that needs to be deleted
-  #         required: true
-  #         schema:
-  #           type: integer
-  #           format: int64
-  #           minimum: 1
-  #     responses:
-  #       '400':
-  #         description: Invalid ID supplied
-  #       '404':
-  #         description: Order not found
+  /user/booking/{id_user}:
+    get:
+      tags:
+        - Bookings
+      summary: Get User by id user
+      operationId: getBookingsByIDUser
+      parameters:
+        - name: id_user
+          in: path
+          description: Use book1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: booking not found
+  /admin/detail:
+    post:
+      tags:
+        - DetailBooking
+      summary: Create detail
+      description: create detail
+      operationId: CreateDetails
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetailBooking'
+        description: Create detail object
+        required: true
+    get:
+      tags:
+        - DetailBooking
+      summary: Get all detail
+      operationId: getAllDetails
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detailss not found
+        
+  /admin/detail/{id}:
+    get:
+      tags:
+        - DetailBooking
+      summary: Get detail by id
+      operationId: getDetailByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Detail1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detail not found
+  /user/detail/{id}:
+    get:
+      tags:
+        - DetailBooking
+      summary: Get detail by id
+      operationId: getDetailsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Detail1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detail not found
+          
 externalDocs:
   description: Find out more about Swagger
   url: 'http://swagger.io'
@@ -2125,25 +2307,20 @@ components:
             $ref: '#/components/schemas/Vaccines'
       xml:
         name: Stok
-    Vaccines_Transaction:
+        
+    VaccineTransactionOut:
       type: object
       properties:
         id:
           type: integer
           format: int64
-        status:
-          type: string
-          enum:
-            - available
-            - pending
-            - sold
         tanggal: 
           type: string
-        no_transaction:
+        notransaction:
           type: integer
         distributor:
           type: string
-        status_acc:
+        status:
           type: boolean
         id_hospitals:
           type: array
@@ -2160,7 +2337,41 @@ components:
           items:
             $ref: '#/components/schemas/Vaccines'
       xml:
-        name: Vaccines_Transaction
+        name: VaccineTransactionOut
+        
+    VaccineTransactionIn:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        asalVaccine: 
+          type: string
+        tanggal: 
+          type: string
+        notransaction:
+          type: integer
+        distributor:
+          type: string
+        status:
+          type: boolean
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_vaccines:
+          type: array
+          xml:
+            name: vaccines
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Vaccines'
+      xml:
+        name: VaccineTransactionIn    
+    
     Certificate:
       type: object
       properties:
@@ -2273,7 +2484,34 @@ components:
           items:
             $ref: '#/components/schemas/Certificate'
       xml:
-        name: Sessions
+        name: Bookings
+        
+    DetailBooking:
+      type: object
+      properties:
+          id_user:
+            type: array
+            xml:
+              name: user
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/User'
+          id_Booking:
+            type: array
+            xml:
+              name: Bookings
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/Bookings'
+          id_OtherPerson:
+            type: array
+            xml:
+              name: OtherPerson
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/Otherperson'
+      xml:
+        name: DetailBooking
     
         
 #-------------------------------------
@@ -2289,16 +2527,3 @@ components:
             $ref: '#/components/schemas/User'
       description: User object that needs to be added
       required: true
-  # securitySchemes:
-  #   jwt_auth:
-  #     type: oauth2
-  #     flows:
-  #       implicit:
-  #         authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
-  #         scopes:
-  #           'write:item': modify items
-  #           'read:item': read your items
-  #   api_key:
-  #     type: apiKey
-  #     name: api_key
-  #     in: header
