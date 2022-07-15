@@ -10,11 +10,11 @@ import (
 )
 
 type EchoControllerVaccineTransaction struct {
-	Svc domain.AdapterServiceVaccineTransaction
+	Svc domain.AdapterServiceVaccineTransactionIn
 }
 
 func (ce *EchoControllerVaccineTransaction) CreateTransactionHandler(c echo.Context) error {
-	transaction := model.VaccineTransactions{}
+	transaction := model.VaccineTransactionsIn{}
 	c.Bind(&transaction)
 
 	err := ce.Svc.CreateVaccinesTransactionService(transaction)
@@ -30,10 +30,10 @@ func (ce *EchoControllerVaccineTransaction) CreateTransactionHandler(c echo.Cont
 }
 
 func (ce *EchoControllerVaccineTransaction) UpdateVaccineTransactionController(c echo.Context) error {
-	transaction := model.VaccineTransactions{}
+	transaction := model.VaccineTransactionsIn{}
 	c.Bind(&transaction)
 
-	err := ce.Svc.UpdateTransactionByIDService(transaction.HospitalId, transaction.VaccineId, transaction)
+	err := ce.Svc.UpdateTransactionByIDService(transaction.ID, transaction)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no change",
@@ -45,14 +45,14 @@ func (ce *EchoControllerVaccineTransaction) UpdateVaccineTransactionController(c
 	})
 }
 
-func (ce *EchoControllerVaccineTransaction) GetTrnasactionByHospitalController(c echo.Context) error {
-	hospital_id := c.Param("hospital_id")
-	HospitalID, err := strconv.Atoi(hospital_id)
+func (ce *EchoControllerVaccineTransaction) GetTransactionByIDController(c echo.Context) error {
+	id := c.Param("id")
+	ID, err := strconv.Atoi(id)
 	if err != nil {
 
 	}
 
-	res, err := ce.Svc.GetAllTransactionByHospitalService(HospitalID)
+	res, err := ce.Svc.GetTransactionByIDService(ID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
@@ -65,33 +65,20 @@ func (ce *EchoControllerVaccineTransaction) GetTrnasactionByHospitalController(c
 	})
 }
 
-func (ce *EchoControllerVaccineTransaction) GetTransactionByHospitalVaccineIDController(c echo.Context) error {
-	hospital_id := c.Param("hospital_id")
-	HospitalID, err := strconv.Atoi(hospital_id)
-	vaccine_id := c.Param("vaccine_id")
-	VaccineID, err := strconv.Atoi(vaccine_id)
-	if err != nil {
+func (ce *EchoControllerVaccineTransaction) GetAllTransactionInController(c echo.Context) error {
+	transaction_in := ce.Svc.GetAllTransactionService()
 
-	}
-
-	res, err := ce.Svc.GetTransactionByHospitalVaccineService(HospitalID, VaccineID)
-	if err != nil {
-		return c.JSON(http.StatusNotFound, map[string]interface{}{
-			"messages": "no id or no delete",
-		})
-	}
-
-	return c.JSON(http.StatusOK, map[string]interface{}{
+	return c.JSONPretty(http.StatusOK, map[string]interface{}{
 		"messages":     "success",
-		"transactions": res,
-	})
+		"transactions": transaction_in,
+	}, "  ")
 }
 
 func (ce *EchoControllerVaccineTransaction) DeleteVaccineTransactionIDController(c echo.Context) error {
-	transaction := model.VaccineTransactions{}
+	transaction := model.VaccineTransactionsIn{}
 	c.Bind(&transaction)
 
-	err := ce.Svc.DeleteVaccineTransactionByIDService(transaction.HospitalId, transaction.VaccineId)
+	err := ce.Svc.DeleteVaccineTransactionByIDService(transaction.ID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, map[string]interface{}{
 			"messages": "no id or no delete",
