@@ -20,11 +20,14 @@ func Server() *echo.Echo {
 	routes.RegisterHospitalGroupAPI(app, conf)
 	routes.RegisterNewsGroupAPI(app, conf)
 	routes.RegisterOPsGroupAPI(app, conf)
+	routes.RegisterBookingGroupAPI(app,conf)
+	routes.RegisterBookingDetailGroupAPI(app,conf)
 	routes.RegisterVaccineGroupAPI(app, conf)
 	routes.RegisterStokVaccineGroupAPI(app, conf)
 	routes.RegisterSessionGroupAPI(app, conf)
-	routes.RegisterVaccineTransactionGroupAPI(app, conf)
+	routes.RegisterVaccineTransactionInGroupAPI(app, conf)
+	routes.RegisterVaccineTransactionOutGroupAPI(app, conf)
 	routes.RegisterAdvertiseGroupAPI(app, conf)
-	routes.RegisterCertificateGroupAPI(app,conf)
+	routes.RegisterCertificateGroupAPI(app, conf)
 	return app
 }

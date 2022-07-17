@@ -17,10 +17,13 @@ func InitConfiguration() Config {
 	return Config{
 		SERVER_ADDRESS: GetOrDefault("SERVER_ADDRESS", "0.0.0.0:8080"),
 		DB_USERNAME:    GetOrDefault("DB_USERNAME", "admin"),
-		DB_PASSWORD:    GetOrDefault("DB_PASSWORD", "pIdXtSqcoOKPvzZ3XgnD"),
+		// DB_USERNAME:    GetOrDefault("DB_USERNAME", "root"),
+		DB_PASSWORD:    GetOrDefault("DB_PASSWORD", "XmNP9Y5DQC2rUVsz4sDi"),
+		// DB_PASSWORD:    GetOrDefault("DB_PASSWORD", "123456"),
 		DB_NAME:        GetOrDefault("DB_NAME", "vaccine"),
 		DB_PORT:        GetOrDefault("DB_PORT", "3306"),
-		DB_HOST:        GetOrDefault("DB_HOST", "awsdb.c0otv3ohtan6.us-east-1.rds.amazonaws.com"),
+		DB_HOST:        GetOrDefault("DB_HOST", "database-4.cn1x7ayh0czt.us-west-1.rds.amazonaws.com"),
+		// DB_HOST:        GetOrDefault("DB_HOST", "127.0.0.1"),
 		JWT_KEY:        GetOrDefault("JWT_KEY", "ABC"),
 	}
 }
@@ -31,22 +34,4 @@ func GetOrDefault(envKey, defaultValue string) string {
 	}
 	return defaultValue
 }
-
-// type CORSConfig struct {
-// 	AllowOrigins []string{"*"}
-// 	AllowHeaders []string{}
-// }
-
-// DefaultCORSConfig = CORSConfig{
-// 	AllowOrigins: []string{"*"},
-// 	AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-// }
-
-// type CORSConfig struct {
-// 	AllowOrigins []string{"*"},
-//   }
-  
-//  DefaultCORSConfig = CORSConfig{
-// 	AllowOrigins: []string{"*"},
-//   }
   
