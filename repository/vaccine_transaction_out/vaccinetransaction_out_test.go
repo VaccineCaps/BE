@@ -12,7 +12,7 @@ import (
 	"BE/model"
 )
 
-func TestGetAllIn(t *testing.T) {
+func TestGetAllOut(t *testing.T) {
 	dbMock, fMock, _ := sqlmock.New()
 	db, _ := gorm.Open(mysql.Dialector{&mysql.Config{
 			Conn: dbMock,
@@ -22,19 +22,19 @@ func TestGetAllIn(t *testing.T) {
 	repo := NewVaccineTransactionRepository(db)
 	defer dbMock.Close()
 
-	fMock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `vaccine_transactions_in`")).
-	WillReturnRows(sqlmock.NewRows([]string{"id", "hospital_id", "vaccinehospital_id","asalvaccine", "status", "tanggal", "no_transaction", "distributor"}).
-	AddRow(1, 1, 1, "china", 1, "2022-07-13", 1,"Kimia Farma" ).
-	AddRow(2, 1, 1, "china", 0, "2022-07-26", 2,"Kimia Farma").
-	AddRow(3, 1, 1, "australia", 0, "2022-07-13", 3,"Kimia Farma"))
+	fMock.ExpectQuery(regexp.QuoteMeta("SELECT * FROM `vaccine_transactions_out`")).
+	WillReturnRows(sqlmock.NewRows([]string{"id", "hospital_id", "vaccinehospital_id", "status", "tanggal", "no_transaction", "distributor"}).
+	AddRow(1, 1, 1, 1, "2022-07-13", 1,"Kimia Farma" ).
+	AddRow(2, 1, 1, 0, "2022-07-26", 2,"Kimia Farma").
+	AddRow(3, 1, 1, 0, "2022-07-13", 3,"Kimia Farma"))
 
 	res := repo.GetAllTransaction()
 
-	assert.Equal(t, res[0].AsalVaccine ,"")
+	assert.Equal(t, res[0].Distributor,"")
 	assert.Len(t, res, 3)
 }
 
-func TestGetInByID(t *testing.T) {
+func TestGetOutByID(t *testing.T) {
 	dbMock, fMock, _ := sqlmock.New()
 	db, _ := gorm.Open(mysql.Dialector{&mysql.Config{
 			Conn: dbMock,
@@ -44,18 +44,18 @@ func TestGetInByID(t *testing.T) {
 	repo := NewVaccineTransactionRepository(db)
 	defer dbMock.Close()
 
-	fMock.ExpectQuery(regexp.QuoteMeta("SELECT `id` FROM `vaccine_transactions_in`")).
-	WillReturnRows(sqlmock.NewRows([]string{"id","hospital_id", "vaccinehospital_id","asalvaccine", "status", "tanggal", "no_transaction", "distributor"}).
-	AddRow(1, 1, 1, "china", 1, "2022-07-13", 1,"Kimia Farma" ).
-	AddRow(2, 1, 1, "china", 0, "2022-07-26", 1,"Kimia Farma").
-	AddRow(3, 1, 1, "australia", 0, "2022-07-13", 1,"Kimia Farma"))
+	fMock.ExpectQuery(regexp.QuoteMeta("SELECT `id` FROM `vaccine_transactions_out`")).
+	WillReturnRows(sqlmock.NewRows([]string{"id", "hospital_id", "vaccinehospital_id", "status", "tanggal", "no_transaction", "distributor"}).
+	AddRow(1, 1, 1, 1, "2022-07-13", 1,"Kimia Farma" ).
+	AddRow(2, 1, 1, 0, "2022-07-26", 2,"Kimia Farma").
+	AddRow(3, 1, 1, 0, "2022-07-13", 3,"Kimia Farma"))
 
 	res, _ := repo.GetTransactionByID(1)
 
-	assert.Equal(t, res, []model.VaccineTransactionsIn([]model.VaccineTransactionsIn(nil)))
+	assert.Equal(t, res, []model.VaccineTransactionsOut([]model.VaccineTransactionsOut(nil)))
 }
 
-func TestUpdateInByID(t *testing.T) {
+func TestUpdateOutByID(t *testing.T) {
 	dbMock, fMock, _ := sqlmock.New()
 	db, _ := gorm.Open(mysql.Dialector{&mysql.Config{
 			Conn: dbMock,
@@ -72,14 +72,14 @@ func TestUpdateInByID(t *testing.T) {
 	WillReturnResult(sqlmock.NewResult(0, 1))
 	fMock.ExpectCommit()
 
-	err := repo.UpdateTransactionByID(1, model.VaccineTransactionsIn{
-		AsalVaccine: "abc",
+	err := repo.UpdateTransactionByID(1, model.VaccineTransactionsOut{
+		Distributor: "abc",
 	})
 	assert.NoError(t, err)
 	assert.True(t, true)
 }
 
-func TestDeleteInByID(t *testing.T) {
+func TestDeleteOutByID(t *testing.T) {
 	dbMock, fMock, _ := sqlmock.New()
 	db, _ := gorm.Open(mysql.Dialector{&mysql.Config{
 			Conn: dbMock,
