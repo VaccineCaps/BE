@@ -2,14 +2,10 @@ FROM golang:1.17-alpine
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
 COPY . .
 
-RUN go build -o /dist
+RUN go build -ldflags "-w -s" -o vaccine .
 
 EXPOSE 3222
 
-CMD ["/dist"]
+ENTRYPOINT [ "./vaccine" ]
