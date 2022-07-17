@@ -1,0 +1,2529 @@
+openapi: 3.0.0
+info:
+  description: |
+    "This is a Documentation Rest API for Vaccine Booking from capstone project Alterra Academy, Group 46. you can access it here. [http://13.57.43.205/](http://13.57.43.205/) or here [http://ec2-13-57-43-205.us-west-1.compute.amazonaws.com/](http://ec2-13-57-43-205.us-west-1.compute.amazonaws.com/)"
+  version: "2.0.0"
+  title: VaccineCaps
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: azkazainur@gmail.com
+
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Azifaazka/VaccineCaps/2.0.0
+  - description: BaseURL
+    url: http://13.57.43.205/
+  
+tags:
+  - name: user
+    description: Operations about User
+  - name: Role
+    description: Operations about Role
+  - name: Provinces
+    description: Operations about Provinces
+  - name: Cities
+    description: Operations about Cities
+  - name: Hospitals
+    description: Operations about Hospitals
+  - name: News
+    description: Operations about News
+  - name: Advertise
+    description: Operations about Advertise
+  - name: Vaccines
+    description: Operations about Vaccines
+  - name: Stok
+    description: Operations about Vaccines_Hospital
+  - name: VaccineTransactionIn
+    description: Operations about VaccineTransactionIn
+  - name: VaccineTransactionOut
+    description: Operations about VaccineTransactionOut
+  - name: Certificate
+    description: Operations about Certificate
+  - name: Sessions
+    description: Operations about Sessions
+  - name: Otherperson
+    description: Operations about Otherperson
+  - name: Bookings
+    description: Operations about Bookings
+  - name: DetailBooking
+    description: Operations about DetailBooking
+    
+paths:
+  /admin/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: LoginAdmin
+      parameters:
+        - name: email
+          in: query
+          description: The email for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        '400':
+          description: Invalid email/password supplied
+  /admin/register:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: RegisterAdmin
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Created user object
+        required: true
+  # /logout:
+  #   post:
+  #     tags:
+  #       - user
+  #     summary: Logs out current logged in user session
+  #     operationId: logoutUser
+  #     responses:
+  #       default:
+  #         description: successful operation
+  /admin/user:
+    get:
+      tags:
+        - user
+      summary: Get all user
+      operationId: getAllUser
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+  
+  /admin/user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get user by id
+      operationId: getUserByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use user1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: UpdateUserByID
+      parameters:
+        - name: id
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid user supplied
+        '404':
+          description: User not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Updated user object
+        required: true
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: DeleteUserByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: Logs user into the system
+      operationId: LoginUser
+      parameters:
+        - name: email
+          in: query
+          description: The email for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+            application/xml:
+              schema:
+                type: string
+        '400':
+          description: Invalid email/password supplied
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: RegisterUser
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: Created user object
+        required: true
+
+  /admin/role:
+    post:
+      tags:
+        - Role
+      summary: Create Role
+      description: This can only be done by the logged in user.
+      operationId: CreateRole
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Role'
+        description: Created Role object
+        required: true
+    get:
+      tags:
+        - Role
+      summary: Get all role
+      operationId: getAllRole
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Role not found
+  
+        
+  /admin/role/{id}:
+    get:
+      tags:
+        - Role
+      summary: Get role by id
+      operationId: getRoleByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use role1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - Role
+      summary: Delete Role
+      description: This can only be done by the logged in Role.
+      operationId: DeleteRoleByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Role not found
+  
+  /admin/cities:
+    post:
+      tags:
+        - Cities
+      summary: Create Cities
+      description: create Citieses
+      operationId: CreateCIties
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cities'
+        description: Created cities object
+        required: true
+    get:
+      tags:
+        - Cities
+      summary: Get all cities
+      operationId: getAllCities
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cities'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Cities'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Cities not found
+  
+        
+  /admin/cities/{id}:
+    get:
+      tags:
+        - Cities
+      summary: Get cities by id
+      operationId: getCitiesByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Province1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - Cities
+      summary: Delete Cities
+      description: This can only be done by the logged in CIties.
+      operationId: DeleteCitiesByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Cities not found
+  
+  /admin/province:
+    post:
+      tags:
+        - Provinces
+      summary: Create Provinces
+      description: create Provinces
+      operationId: CreateProvinces
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Provinces'
+        description: Created provinces object
+        required: true
+    get:
+      tags:
+        - Provinces
+      summary: Get all provinces
+      operationId: getAllProvinces
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  
+  /admin/province/{id}:
+    get:
+      tags:
+        - Provinces
+      summary: Get provinces by id
+      operationId: getProvinceByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Province1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Provinces'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Role not found
+    delete:
+      tags:
+        - Provinces
+      summary: Delete Province
+      description: This can only be done by the logged in Provinces.
+      operationId: DeleteProvincesByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /admin/hospitals:
+    post:
+      tags:
+        - Hospitals
+      summary: Create Hospitals
+      description: create Hospitals
+      operationId: CreateHospitals
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hospitals'
+        description: Created Hospitals object
+        required: true
+    get:
+      tags:
+        - Hospitals
+      summary: Get all hospitals
+      operationId: getAllHospitals
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /admin/hospitals/{id}:
+    get:
+      tags:
+        - Hospitals
+      summary: Get Hospitals by id
+      operationId: getHospitalByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use hospital1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+    put:
+      tags:
+        - Hospitals
+      summary: Update an existing Hospital
+      operationId: UpdateHospitals
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Hospitals not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Hospitals'
+        description: Update Hospitals object
+        required: true
+    delete:
+      tags:
+        - Hospitals
+      summary: Delete Hospitals
+      description: This can only be done on Hospitals.
+      operationId: DeleteHospitalsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+  /user/hospitals:
+    get:
+      tags:
+        - Hospitals
+      summary: Get all hospitals
+      operationId: getAllHospital
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /user/hospitals/{id}:
+    get:
+      tags:
+        - Hospitals
+      summary: Get Hospitals by id
+      operationId: getHospitalsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use hospital1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Hospitals'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+    
+  /admin/news:
+    post:
+      tags:
+        - News
+      summary: Create News
+      description: create News
+      operationId: CreateNews
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+        description: Created News object
+        required: true
+    get:
+      tags:
+        - News
+      summary: Get all news
+      operationId: getAllNews
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /admin/news/{id}:
+    get:
+      tags:
+        - News
+      summary: Get News by id
+      operationId: getNewsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use news1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+    put:
+      tags:
+        - News
+      summary: Update an existing News
+      operationId: UpdateNews
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: News not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/News'
+        description: Update News object
+        required: true
+    delete:
+      tags:
+        - News
+      summary: Delete News
+      description: This can only be done on News.
+      operationId: DeleteNewsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: News not found 
+  /user/news:
+    get:
+      tags:
+        - News
+      summary: Get all news
+      operationId: getAllNewss
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Provinces not found
+  /user/news/{id}:
+    get:
+      tags:
+        - News
+      summary: Get News by id
+      operationId: getNewssByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use news1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/News'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+
+  /admin/advertise:
+    post:
+      tags:
+        - Advertise
+      summary: Create Advertises
+      description: create Advertise
+      operationId: CreateAdvertises
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Advertise'
+        description: Created Advertises object
+        required: true
+    get:
+      tags:
+        - Advertise
+      summary: Get all advertises
+      operationId: getAllAdvertises
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertise not found
+  /admin/advertise/{id}:
+    get:
+      tags:
+        - Advertise
+      summary: Get Advertises by id
+      operationId: getAdvertiseByID
+      parameters:
+        - name: id
+          in: path
+          description: Use advertise1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertises not found
+    put:
+      tags:
+        - Advertise
+      summary: Update an existing Advertise
+      operationId: UpdateAdvertises
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Advertise not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Advertise'
+        description: Update Advertise object
+        required: true
+    delete:
+      tags:
+        - Advertise
+      summary: Delete Advertise
+      description: This can only be done on Advertise.
+      operationId: DeleteAdvertiseByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertise not found
+  /user/advertise:
+    get:
+      tags:
+        - Advertise
+      summary: Get all advertises
+      operationId: getAllAdvertise
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertise not found
+          
+  /user/advertise/{id}:
+    get:
+      tags:
+        - Advertise
+      summary: Get Advertises by id
+      operationId: getAdvertisesByID
+      parameters:
+        - name: id
+          in: path
+          description: Use advertise1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Advertise'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Advertises not found
+  
+  /admin/vaccine:
+    post:
+      tags:
+        - Vaccines
+      summary: Create Vaccine
+      description: create Vaccine
+      operationId: CreateVaccines
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vaccines'
+        description: Created Vaccine object
+        required: true
+    get:
+      tags:
+        - Vaccines
+      summary: Get all vaccines
+      operationId: getAllVaccines
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vaccines'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Vaccines'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccine not found
+  /admin/vaccine/{id}:
+    get:
+      tags:
+        - Vaccines
+      summary: Get vaccines by id
+      operationId: getVaccinesByID
+      parameters:
+        - name: id
+          in: path
+          description: Use vaccine1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vaccines'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Vaccines'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - Vaccines
+      summary: Update an existing Vaccine
+      operationId: UpdateVaccines
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Vaccine not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vaccines'
+        description: Update  Vaccine object
+        required: true
+    delete:
+      tags:
+        - Vaccines
+      summary: Delete Vaccine
+      description: This can only be done on Advertise.
+      operationId: DeleteVaccineByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccine not found
+    
+  /admin/stok:
+    post:
+      tags:
+        - Stok
+      summary: Create Vaccine_Hospital
+      description: create Vaccine_Hospital
+      operationId: CreateVaccine_Hospitals
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Stok'
+        description: Created Stok object
+        required: true
+  /admin/stok/{id_hospitals}:
+    get:
+      tags:
+        - Stok
+      summary: Get Stok by id hospital
+      operationId: getStokByID
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Use Stok1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stok'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Stok'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+  /admin/stok/{id_hospitals}/{id_vaccines}:
+    get:
+      tags:
+        - Stok
+      summary: Get Stok by id hospital and vaccines
+      operationId: getStokByHospitalVaccine
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Use Stok1 for testing.
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stok'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Stok'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - Stok
+      summary: Update an existing Stok
+      operationId: UpdateVaccineStok
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Vaccine not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vaccines'
+        description: Update  Vaccine object
+        required: true
+    delete:
+      tags:
+        - Stok
+      summary: Delete Stok
+      description: This can only be done on Stok.
+      operationId: DeleteStokByID
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccine not found
+          
+  /admin/transactionin:
+    post:
+      tags:
+        - VaccineTransactionIn
+      summary: Create Transaction
+      description: create Transaction
+      operationId: CreateVaccinesTransaction
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionIn'
+        description: Created Transactions object
+        required: true
+    get:
+      tags:
+        - VaccineTransactionIn
+      summary: Get Transaction In
+      operationId: getTransaction
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionIn'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionIn'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  /admin/transactionin/{id}:
+    get:
+      tags:
+        - VaccineTransactionIn
+      summary: Get Transaction by id 
+      operationId: getTransactionByHospitalVaccine
+      parameters:
+        - name: id
+          in: path
+          description: Use Transaction1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionIn'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionIn'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - VaccineTransactionIn
+      summary: Update transaction
+      operationId: Update transaction
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Transaction not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionIn'
+        description: Update Transaction object
+        required: true
+    delete:
+      tags:
+        - VaccineTransactionIn
+      summary: Delete Transaction
+      description: This can only be done on Transaction.
+      operationId: DeleteTransactionByID
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  
+  /admin/transactionout:
+    post:
+      tags:
+        - VaccineTransactionOut
+      summary: Create Transaction
+      description: create Transaction
+      operationId: CreateVaccinesTransactionOut
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionOut'
+        description: Created Transactions object
+        required: true
+    get:
+      tags:
+        - VaccineTransactionOut
+      summary: Get Transaction Out
+      operationId: getTransactionOut
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  /admin/transactionout/{id}:
+    get:
+      tags:
+        - VaccineTransactionOut
+      summary: Get TransactionOut by id 
+      operationId: getTransactionOutByID
+      parameters:
+        - name: id
+          in: path
+          description: Use Transaction1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VaccineTransactionOut'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - VaccineTransactionOut
+      summary: Update transaction
+      operationId: Update transaction Out
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Transaction not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VaccineTransactionOut'
+        description: Update Transaction object
+        required: true
+    delete:
+      tags:
+        - VaccineTransactionOut
+      summary: Delete Transaction
+      description: This can only be done on Transaction.
+      operationId: DeleteTransactionOutByID
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Transaction not found
+  
+  /admin/certificate:
+    post:
+      tags:
+        - Certificate
+      summary: Create certificate
+      description: create certificate
+      operationId: CreateCertificates
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Certificate'
+        description: Created Certificate object
+        required: true
+    get:
+      tags:
+        - Certificate
+      summary: Get all certificate
+      operationId: getAllCertificates
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /admin/certificate/{id}:
+    get:
+      tags:
+        - Certificate
+      summary: Get by id
+      operationId: getCertificateByID
+      parameters:
+        - name: id
+          in: path
+          description: Use certificate for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Certificates not found
+    put:
+      tags:
+        - Certificate
+      summary: Update an existing certificate
+      operationId: UpdateCertificates
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Certificate not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Certificate'
+        description: Update Certificate object
+        required: true
+    delete:
+      tags:
+        - Certificate
+      summary: Delete Certificate
+      description: This can only be done on Hospitals.
+      operationId: DeleteCertificateByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Hospitals not found
+  /user/certificate:
+    get:
+      tags:
+        - Certificate
+      summary: Get all certificate
+      operationId: getAllCertificate
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /user/certificate/{id}:
+    get:
+      tags:
+        - Certificate
+      summary: Get by id
+      operationId: getCertificatesByID
+      parameters:
+        - name: id
+          in: path
+          description: Use certificate for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Certificate'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Certificates not found
+  
+  /admin/session:
+    post:
+      tags:
+        - Sessions
+      summary: Create session
+      description: create Session Vaccine
+      operationId: CreateSession
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sessions'
+        description: Created Sessions object
+        required: true
+  /admin/session/{id_hospitals}:
+    get:
+      tags:
+        - Sessions
+      summary: Get Sessions by id hospital
+      operationId: getSessionByID
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Use session1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sessions'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Sessions'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: session not found
+  /admin/session/{id_hospitals}/{id_vaccines}:
+    get:
+      tags:
+        - Sessions
+      summary: Get session by id hospital and vaccines
+      operationId: getSessionByHospitalVaccine
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Use Transaction1 for testing.
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sessions'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Sessions'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Vaccines not found
+    put:
+      tags:
+        - Sessions
+      summary: Update session
+      operationId: Update session
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Transaction not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sessions'
+        description: Update Session object
+        required: true
+    delete:
+      tags:
+        - Sessions
+      summary: Delete Session
+      description: This can only be done on Session.
+      operationId: DeleteSessionByID
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_vaccines
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Session not found
+  /admin/others:
+    post:
+      tags:
+        - Otherperson
+      summary: Create otherbook
+      description: create otherbook
+      operationId: CreateOP
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Otherperson'
+        description: Created otherbook object
+        required: true
+    get:
+      tags:
+        - Otherperson
+      summary: Get all otherbook
+      operationId: getAllOP
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /admin/others/{id}:
+    get:
+      tags:
+        - Otherperson
+      summary: Get by id
+      operationId: getOPByID
+      parameters:
+        - name: id
+          in: path
+          description: Use otherbook for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: otherbook not found
+    put:
+      tags:
+        - Otherperson
+      summary: Update an existing otherbook
+      operationId: UpdateOP
+      parameters:
+        - name: id
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: otherbook not found
+        '405':
+          description: Validation exception
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Otherperson'
+        description: Update otherbook object
+        required: true
+    delete:
+      tags:
+        - Otherperson
+      summary: Delete otherbook
+      description: This can only be done on otherbook.
+      operationId: DeleteOPByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id suppliedf
+        '404':
+          description: otherbook not found
+  /user/others:
+    post:
+      tags:
+        - Otherperson
+      summary: Create otherbook
+      description: create otherbook
+      operationId: CreateOPs
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Otherperson'
+        description: Created otherbook object
+        required: true
+    get:
+      tags:
+        - Otherperson
+      summary: Get all otherbook
+      operationId: getAllOPs
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /user/others/{id}:
+    get:
+      tags:
+        - Otherperson
+      summary: Get by id
+      operationId: getOPsByID
+      parameters:
+        - name: id
+          in: path
+          description: Use otherbook for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Otherperson'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: otherbook not found
+          
+  /admin/booking:
+    post:
+      tags:
+        - Bookings
+      summary: Create booking
+      description: create Booking Vaccine
+      operationId: CreateBooking
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bookings'
+        description: Created Booking object
+        required: true
+    get:
+      tags:
+        - Bookings
+      summary: Get all booking
+      operationId: getAllBook
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: data not found
+  /admin/booking/{id_user}:
+    get:
+      tags:
+        - Bookings
+      summary: Get User by id user
+      operationId: getBookingByIDUser
+      parameters:
+        - name: id_user
+          in: path
+          description: Use book1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: booking not found
+  /admin/booking/{id_sessions}:
+    get:
+      tags:
+        - Bookings
+      summary: Get booking by id sessions
+      operationId: getBookingByIDSession
+      parameters:
+        - name: id_sessions
+          in: path
+          description: Use session1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: booking not found
+          
+  /admin/booking/{id_hospitals}/{id_user}/{id_sessions}/{id_vstatus}:
+    delete:
+      tags:
+        - Bookings
+      summary: Delete Session
+      description: This can only be done on Session.
+      operationId: DeleteBookByID
+      parameters:
+        - name: id_hospitals
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_user
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_sessions
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+        - name: id_vstatus
+          in: path
+          description: Update
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Session not found
+  /user/booking/{id_user}:
+    get:
+      tags:
+        - Bookings
+      summary: Get User by id user
+      operationId: getBookingsByIDUser
+      parameters:
+        - name: id_user
+          in: path
+          description: Use book1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Bookings'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: booking not found
+  /admin/detail:
+    post:
+      tags:
+        - DetailBooking
+      summary: Create detail
+      description: create detail
+      operationId: CreateDetails
+      responses:
+        default:
+          description: successful operation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetailBooking'
+        description: Create detail object
+        required: true
+    get:
+      tags:
+        - DetailBooking
+      summary: Get all detail
+      operationId: getAllDetails
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detailss not found
+        
+  /admin/detail/{id}:
+    get:
+      tags:
+        - DetailBooking
+      summary: Get detail by id
+      operationId: getDetailByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Detail1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detail not found
+  /user/detail/{id}:
+    get:
+      tags:
+        - DetailBooking
+      summary: Get detail by id
+      operationId: getDetailsByID
+      parameters:
+        - name: id
+          in: path
+          description: The name that needs to be fetched. Use Detail1 for testing.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DetailBooking'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: Detail not found
+          
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        id_roles:
+          type: array
+          xml:
+            name: role
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Role'
+      xml:
+        name: User
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: Role
+    Provinces:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: Provinces
+    Cities:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        id_province:
+          type: array
+          xml:
+            name: provinces
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Provinces'
+      xml:
+        name: Cities
+    Hospitals:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        address:
+          type: string
+        id_province:
+          type: array
+          xml:
+            name: provinces
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Provinces'
+        id_user:
+          type: array
+          xml:
+            name: User
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/User'
+      xml:
+        name: Hospitals
+    News:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        context:
+          type: string
+        id_hospital:
+          type: array
+          xml:
+            name: hospital
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+      xml:
+        name: News
+    Advertise:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        image:
+          type: string
+        id_hospital:
+          type: array
+          xml:
+            name: hospital
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+      xml:
+        name: Advertise
+    Vaccines:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      xml:
+        name: Vaccines
+    Stok:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        Stok:
+          type: integer
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_vaccines:
+          type: array
+          xml:
+            name: vaccines
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Vaccines'
+      xml:
+        name: Stok
+        
+    VaccineTransactionOut:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        tanggal: 
+          type: string
+        notransaction:
+          type: integer
+        distributor:
+          type: string
+        status:
+          type: boolean
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_vaccines:
+          type: array
+          xml:
+            name: vaccines
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Vaccines'
+      xml:
+        name: VaccineTransactionOut
+        
+    VaccineTransactionIn:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        asalVaccine: 
+          type: string
+        tanggal: 
+          type: string
+        notransaction:
+          type: integer
+        distributor:
+          type: string
+        status:
+          type: boolean
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_vaccines:
+          type: array
+          xml:
+            name: vaccines
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Vaccines'
+      xml:
+        name: VaccineTransactionIn    
+    
+    Certificate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        sertif:
+          type: string
+      xml:
+        name: Certificate
+    Sessions:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        waktu: 
+          type: string
+        max_session:
+          type: integer
+        jadwal:
+          type: string
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_vaccines:
+          type: array
+          xml:
+            name: vaccines
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Vaccines'
+      xml:
+        name: Sessions
+        
+    Otherperson:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        placeofbirth:
+          type: string
+        dateofbirth:
+          type: string
+        address:
+          type: string
+        phone:
+          type: string
+        nik: 
+          type: integer
+        email: 
+          type: string
+        vaccinestatus: 
+          type: integer
+        id_user:
+          type: array
+          xml:
+            name: User
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/User'
+      xml:
+        name: Otherperson
+    
+    Bookings:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        booked_code: 
+          type: string
+        vaccine_number:
+          type: string
+        status:
+          type: boolean
+        id_hospitals:
+          type: array
+          xml:
+            name: hospitals
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Hospitals'
+        id_sessions:
+          type: array
+          xml:
+            name: sessions
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Sessions'
+        id_user:
+          type: array
+          xml:
+            name: User
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/User'
+        id_certificate:
+          type: array
+          xml:
+            name: Certificate
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Certificate'
+      xml:
+        name: Bookings
+        
+    DetailBooking:
+      type: object
+      properties:
+          id_user:
+            type: array
+            xml:
+              name: user
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/User'
+          id_Booking:
+            type: array
+            xml:
+              name: Bookings
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/Bookings'
+          id_OtherPerson:
+            type: array
+            xml:
+              name: OtherPerson
+              wrapped: true
+            items:
+              $ref: '#/components/schemas/Otherperson'
+      xml:
+        name: DetailBooking
+    
+        
+#-------------------------------------
+    
+  requestBodies:
+    User:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/User'
+      description: User object that needs to be added
+      required: true
