@@ -3,6 +3,7 @@ package model
 import "time"
 
 type VaccineTransactionsIn struct {
+	ID                int              `json:"id" gorm:"PrimaryKey;AUTO_INCREMENT;column:id"`
 	HospitalId        int              `gorm:"not null" json:"hospital_id"`
 	Hospital          Hospitals        `gorm:"ForeignKey:HospitalId;references:ID;null" json:"-"`
 	VaccineHospitalId int              `gorm:"not null" json:"vaccinehospital_id"`
