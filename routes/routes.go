@@ -341,7 +341,7 @@ func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/booking", controller.CreateBookingHandler)
 	adminRoutes.GET("/booking", controller.GetAllBookingController)
-	adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
+	// adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
 	adminRoutes.GET("/booking/:session_id", controller.GetBookingBySessionController)
 	adminRoutes.DELETE("/booking/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
 
@@ -363,10 +363,10 @@ func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/detail", controller.CreateBookingDetailHandler)
 	adminRoutes.GET("/detail", controller.GetAllBookingDetailController)
-	adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
+	// adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
 	adminRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
-	adminRoutes.GET("/detail/:otherperson_id", controller.GetBookingDetailByOPController)
-	adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
+	// adminRoutes.GET("/detail/:otherperson_id", controller.GetBookingDetailByOPController)
+	// adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
 
 	userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
