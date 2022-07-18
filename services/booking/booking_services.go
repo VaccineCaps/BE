@@ -41,8 +41,8 @@ func (s *svcBooking) GetBookingsByIDService(id int) (booking model.Booking, err 
 	return s.repo.GetBookingsByID(id)
 }
 
-func (s *svcBooking) DeleteBookingByIDService(user_id, hospital_id, session_id, vaccinestatus_id int) error {
-	return s.repo.DeleteBookingByID(user_id, hospital_id, session_id, vaccinestatus_id)
+func (s *svcBooking) DeleteBookingByIDService(user_id, hospital_id, session_id, certificate_id int) error {
+	return s.repo.DeleteBookingByID(user_id, hospital_id, session_id, certificate_id)
 }
 
 func NewServiceBooking(repo domain.AdapterRepositoryBooking, repoSession domain.AdapterRepositorySession, c config.Config) domain.AdapterServiceBooking {
