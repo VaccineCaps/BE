@@ -34,4 +34,4 @@ jobs:
           script: |
             docker login -u azifaazka -p Azumiya18
             docker pull azifaazka/vaccinecaps2:latest
-            docker run -d -p 80:8080 --name vaccine azifaazka/vaccinecaps2:latest
+            docker run -d -p 80:8080 --name vaccinecaps2 azifaazka/vaccinecaps2:latest
