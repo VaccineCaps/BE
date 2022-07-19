@@ -33,7 +33,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             docker login -u azifaazka -p Azumiya18
-            docker stop vaccinecapsdu
-            docker container rm vaccinecapsdu
             docker pull azifaazka/vaccinecapsdua:latest
             docker run -e DB_HOST="database-4.cn1x7ayh0czt.us-west-1.rds.amazonaws.com" -e DB_USERNAME="admin" -e DB_PASSWORD="XmNP9Y5DQC2rUVsz4sDi" -e DB_NAME="vaccine" -e DB_PORT="3306" -e JWT_KEY="ABC" APP_HOST="13.57.43.205" -p 80:8080 --name vaccinecapsdua --detach azifaazka/vaccinecapsdua:latest
