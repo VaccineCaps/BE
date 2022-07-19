@@ -23,7 +23,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: azifaazka/vaccinecaps2:latest
+          tags: azifaazka/vaccinecapsdua:latest
       - name: ssh aws ec2 and redeploy docker
         uses: appleboy/ssh-action@master
         with:
@@ -33,5 +33,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             docker login -u azifaazka -p Azumiya18
-            docker pull azifaazka/vaccinecaps2:latest
-            docker run -e DB_HOST="database-4.cn1x7ayh0czt.us-west-1.rds.amazonaws.com" -e DB_USERNAME="admin" -e DB_PASSWORD="XmNP9Y5DQC2rUVsz4sDi" -e DB_NAME="vaccine" -e DB_PORT="3306" -e JWT_KEY="ABC" -e APP_HOST="13.57.43.205" -p 80:8080 --name vaccinecaps2 --detach azifaazka/vaccinecaps2:latest
+            docker pull azifaazka/vaccinecapsdua:latest
+            docker run -e DB_HOST="database-4.cn1x7ayh0czt.us-west-1.rds.amazonaws.com" -e DB_USERNAME="admin" -e DB_PASSWORD="XmNP9Y5DQC2rUVsz4sDi" -e DB_NAME="vaccine" -e DB_PORT="3306" -e JWT_KEY="ABC" -e APP_HOST="13.57.43.205" -p 80:8080 --name vaccinecapsdua --detach azifaazka/vaccinecapsdua:latest
