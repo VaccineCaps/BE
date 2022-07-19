@@ -6,6 +6,6 @@ COPY . .
 
 RUN go build -ldflags "-w -s" -o vaccine .
 
-EXPOSE 3222
+EXPOSE 8080
 
 ENTRYPOINT [ "./vaccine" ]
