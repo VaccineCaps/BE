@@ -34,7 +34,6 @@
     </p>
     <p style="text-align:left">
         This application was made using the Go language and several Go libraries such as GORM, Echo.
-        For unit testing we used Testify library to ensure that our application works properly.
         We used AWS cloud to deploy our application.
         So that this project can be maintained in the future, we implemented a clean code architecture.
     </p>
@@ -46,3 +45,13 @@
     </p>
 </div>
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+# Documentation
+<details>
+    <summary>ERD</summary>
+    <div align="center">
+        <a href="images/erd.jpg">
+            <img src="images/erd-capstone-vaccine-Diagram FIX.drawio.png" alt="ERD">
+        </a>
+    </div>
+</details>
