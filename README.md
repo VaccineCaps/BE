@@ -60,7 +60,7 @@
     <summary>OpenAPI</summary>
     <div align="center">
         <h3 align="center">
-            <a href="https://app.swaggerhub.com/apis/Azifaazka/VaccineCaps/1.0.0#/">SwaggerHub</a>
+            <a href="https://app.swaggerhub.com/apis/Azifaazka/VaccineCaps/2.0.0">SwaggerHub</a>
         </h3>
     </div>
 </details>
