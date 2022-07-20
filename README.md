@@ -30,8 +30,7 @@
 <!-- Project Description -->
 <div>
     <p style="text-align:left">
-    Waktu belakangan ini, pemerintah dengan gencar menyuarakan vaksinasi kepada setiap orang demi mencegah penyebaran virus khususnya virus Covid-19 yang selama 2         tahun ini telah meresahkan kehidupan. Demi melancaran hal tersebut maka terciptalah aplikasi i-vaksin yang dimana mampu mengkoordinir registrasi vaksin kepada         masyarakat Indonesia.
-
+    Waktu belakangan ini, pemerintah dengan gencar menyuarakan vaksinasi kepada setiap orang demi mencegah penyebaran virus khususnya virus Covid-19 yang selama 2 tahun ini telah meresahkan kehidupan. Demi melancaran hal tersebut maka terciptalah aplikasi i-vaksin yang dimana mampu mengkoordinir registrasi vaksin kepada masyarakat Indonesia.
     </p>
     <p style="text-align:left">
         This application was made using the Go language and several Go libraries such as GORM, Echo.
