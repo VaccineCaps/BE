@@ -266,3 +266,8 @@ BE
 ├── main.go
 └── swagger.yaml
 ```
+    
+# Contacts
+- [![GitHub](https://img.shields.io/badge/Irfancahyoo-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/irfancahyo) [![LinkedIn](https://img.shields.io/badge/Irfancahyoo-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/irfan-cahyo-ariawan-942858196/)
+- [![GitHub](https://img.shields.io/badge/Azifaazka-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Azifaazka) [![LinkedIn](https://img.shields.io/badge/Azifaazka-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/azka-zainur-azifa-2672b71b8/)
+<p align="right">(<a href="#top">back to top</a>)</p>
