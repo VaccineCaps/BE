@@ -137,6 +137,9 @@ BE
 │   │   └── user_jwt.go
 ├── images
 │   ├── erd-capstone-vaccine-Diagram FIX.drawio.png
+│   ├── handlerTesting.jpeg
+│   ├── repoTesting.jpeg
+│   ├── serviceTesting.jpeg
 │   └── vaccineCaps.jpg
 ├── model
 │   ├── advertise.go
@@ -272,7 +275,9 @@ BE
 # Unit Test
 <details>
     <summary>Results</summary>
-Unit Testing Coverage ??%
+    ![Repo Testing Coverage](images/repoTesting.jpeg)
+    ![Service Testing Coverage](images/serviceTesting.jpeg)
+    ![Handler Testing Coverage](images/handlerTesting.jpeg)
 </details>
 <p align="right">(<a href="#top">back to top</a>)</p>
     
