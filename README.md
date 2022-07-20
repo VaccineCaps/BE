@@ -276,10 +276,11 @@ BE
 <details>
     <summary>Results</summary>
     
-    ![Repo Testing Coverage](images/repoTesting.jpeg)
-    ![Service Testing Coverage](images/serviceTesting.jpeg)
-    ![Handler Testing Coverage](images/handlerTesting.jpeg)
+    ![Testing Coverage](images/repoTesting.jpeg)
+    ![Testing Coverage](images/serviceTesting.jpeg)
+    ![Testing Coverage](images/handlerTesting.jpeg)
     
+Unit Testing Coverage
 </details>
 <p align="right">(<a href="#top">back to top</a>)</p>
     
