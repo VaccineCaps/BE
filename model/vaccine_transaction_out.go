@@ -12,6 +12,7 @@ type VaccineTransactionsOut struct {
 	Tanggal           time.Time        `json:"tanggal"`
 	NoTransaction     int              `json:"no_transaction"`
 	Distributor       string           `json:"distributor"`
+	EmailDist		  string		   `json:"emaildist"`
 }
 
 func (*VaccineTransactionsOut) TableName() string {

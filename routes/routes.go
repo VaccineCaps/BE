@@ -86,7 +86,7 @@ func RegisterUserGroupAPI(e *echo.Echo, conf config.Config) {
 	// adminRoutes.POST("/login", controller.LoginHandler)
 	adminRoutes.GET("/users", controller.GetUsersController)
 	adminRoutes.GET("/users/:id", controller.GetUserController)
-	adminRoutes.POST("/users/:id", controller.UpdateUserController)
+	adminRoutes.PUT("/users/:id", controller.UpdateUserController)
 	adminRoutes.DELETE("/users/:id", controller.DeleteUserController)
 
 	// userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
@@ -229,7 +229,7 @@ func RegisterVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/vaccine", controller.CreateVaccineController)
 	adminRoutes.GET("/vaccine", controller.GetAllVaccineController)
 	adminRoutes.GET("/vaccine/:id", controller.GetVaccineIDController)
-	adminRoutes.POST("/vaccine/:id", controller.UpdateVaccineController)
+	adminRoutes.PUT("/vaccine/:id", controller.UpdateVaccineController)
 	adminRoutes.DELETE("/vaccine/:id", controller.DeleteVaccineIDController)
 }
 
@@ -247,7 +247,7 @@ func RegisterStokVaccineGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/stok", controller.CreateStokHandler)
 	adminRoutes.GET("/stok/:hospital_id", controller.GetStokByHospitalController)
 	adminRoutes.GET("/stok/:hospital_id/:vaccine_id", controller.GetStokByHospitalVaccineIDController)
-	adminRoutes.POST("/stok/:hospital_id/:vaccine_id", controller.UpdateVaccineStokController)
+	adminRoutes.PUT("/stok/:hospital_id/:vaccine_id", controller.UpdateVaccineStokController)
 	adminRoutes.DELETE("/stok/:hospital_id/:vaccine_id", controller.DeleteHospitalVaccineIDController)
 }
 
@@ -265,7 +265,7 @@ func RegisterSessionGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/session", controller.CreateSessionHandler)
 	adminRoutes.GET("/session/:hospital_id", controller.GetSessionByHospitalController)
 	adminRoutes.GET("/session/:hospital_id/:vaccine_id", controller.GetSessionByHospitalVaccineIDController)
-	adminRoutes.POST("/session/:hospital_id/:vaccine_id", controller.UpdateVaccineSessionController)
+	adminRoutes.PUT("/session/:hospital_id/:vaccine_id", controller.UpdateVaccineSessionController)
 	adminRoutes.DELETE("/session/:hospital_id/:vaccine_id", controller.DeleteSessionIDController)
 }
 
@@ -283,7 +283,7 @@ func RegisterVaccineTransactionInGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/transactionin", controller.CreateTransactionHandler)
 	adminRoutes.GET("/transactionin/:id", controller.GetTransactionByIDController)
 	adminRoutes.GET("/transactionin", controller.GetAllTransactionInController)
-	adminRoutes.POST("/transactionin/:id", controller.UpdateVaccineTransactionController)
+	adminRoutes.PUT("/transactionin/:id", controller.UpdateVaccineTransactionController)
 	adminRoutes.DELETE("/transactionin/:id", controller.DeleteVaccineTransactionIDController)
 }
 
@@ -301,7 +301,7 @@ func RegisterVaccineTransactionOutGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes.POST("/transactionout", controller.CreateTransactionHandler)
 	adminRoutes.GET("/transactionout/:id", controller.GetTransactionByIDController)
 	adminRoutes.GET("/transactionout", controller.GetAllTransactionInController)
-	adminRoutes.POST("/transactionout/:id", controller.UpdateVaccineTransactionController)
+	adminRoutes.PUT("/transactionout/:id", controller.UpdateVaccineTransactionController)
 	adminRoutes.DELETE("/transactionout/:id", controller.DeleteVaccineTransactionIDController)
 }
 
@@ -341,9 +341,9 @@ func RegisterBookingGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/booking", controller.CreateBookingHandler)
 	adminRoutes.GET("/booking", controller.GetAllBookingController)
-	adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
+	// adminRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
 	adminRoutes.GET("/booking/:session_id", controller.GetBookingBySessionController)
-	adminRoutes.DELETE("/booking/:user_id/:hospital_id/:session_id/:vaccinestatus_id", controller.DeleteBookingController)
+	adminRoutes.DELETE("/booking/:user_id/:hospital_id/:session_id/:certificate_id", controller.DeleteBookingController)
 
 	userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/booking/:user_id", controller.GetBookingByUserController)
@@ -363,10 +363,10 @@ func RegisterBookingDetailGroupAPI(e *echo.Echo, conf config.Config) {
 	adminRoutes := e.Group("admin", m.CheckTokenAdmin, middleware.CORS())
 	adminRoutes.POST("/detail", controller.CreateBookingDetailHandler)
 	adminRoutes.GET("/detail", controller.GetAllBookingDetailController)
-	adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
+	// adminRoutes.GET("/detail/:id", controller.GetBookingDetailByIDController)
 	adminRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
-	adminRoutes.GET("/detail/:otherperson_id", controller.GetBookingDetailByOPController)
-	adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
+	// adminRoutes.GET("/detail/:otherperson_id", controller.GetBookingDetailByOPController)
+	// adminRoutes.GET("/detail/:booking_id", controller.GetBookingDetailByBookingController)
 
 	userRoutes := e.Group("user", m.CheckTokenUser, middleware.CORS())
 	userRoutes.GET("/detail/:user_id", controller.GetBookingDetailByUserController)
